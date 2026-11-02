@@ -5,6 +5,9 @@ import com.novatech.terratech.iam.domain.repository.AccountRepository
 import com.novatech.terratech.iam.infrastructure.implementation.AccountRepositoryImpl
 import com.novatech.terratech.iam.infrastructure.local.SessionStore
 import com.novatech.terratech.iam.infrastructure.remote.AccountApi
+import com.novatech.terratech.inventory.domain.repository.InventoryRepository
+import com.novatech.terratech.inventory.infrastructure.implementation.InventoryRepositoryImpl
+import com.novatech.terratech.inventory.infrastructure.remote.InventoryApi
 import com.novatech.terratech.monitoring.domain.repository.FieldWeatherRepository
 import com.novatech.terratech.monitoring.domain.repository.MonitoringRepository
 import com.novatech.terratech.monitoring.domain.repository.SatelliteImageRepository
@@ -53,6 +56,10 @@ object RepositoryModule {
         api: MonitoringApi,
         db: TerraDatabase,
     ): FieldWeatherRepository = FieldWeatherRepositoryImpl(api, db)
+
+    @Provides
+    @Singleton
+    fun inventory(api: InventoryApi): InventoryRepository = InventoryRepositoryImpl(api)
 
     @Provides
     @Singleton

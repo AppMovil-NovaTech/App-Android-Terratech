@@ -28,8 +28,8 @@ internal fun TerraTechBottomBar(
                 selected = selectedTab == destination,
                 onClick = { onNavigate(destination) },
                 icon = {
-                    if (destination == TopLevelDestination.FIELDS) {
-                        Icon(painterResource(R.drawable.ic_fields), contentDescription = null)
+                    if (destination == TopLevelDestination.FIELDS || destination == TopLevelDestination.INVENTORY) {
+                        Icon(painterResource(if (destination == TopLevelDestination.INVENTORY) R.drawable.ic_inventory else R.drawable.ic_fields), contentDescription = null)
                     } else {
                         Icon(
                             if (destination == TopLevelDestination.HOME) Icons.Outlined.Home
