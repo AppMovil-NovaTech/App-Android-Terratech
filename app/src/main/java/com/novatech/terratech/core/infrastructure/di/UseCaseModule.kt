@@ -2,6 +2,8 @@ package com.novatech.terratech.core.infrastructure.di
 
 import com.novatech.terratech.iam.application.usecase.AccountActions
 import com.novatech.terratech.iam.domain.repository.AccountRepository
+import com.novatech.terratech.inventory.application.usecase.InventoryActions
+import com.novatech.terratech.inventory.domain.repository.InventoryRepository
 import com.novatech.terratech.monitoring.application.usecase.CompareVegetationPeriod
 import com.novatech.terratech.monitoring.application.usecase.GetFieldWeather
 import com.novatech.terratech.monitoring.application.usecase.GetSatelliteImage
@@ -22,6 +24,8 @@ object UseCaseModule {
     @Provides fun accountActions(repository: AccountRepository) = AccountActions(repository)
 
     @Provides fun profileActions(repository: ProfileRepository) = ProfileActions(repository)
+
+    @Provides fun inventoryActions(repository: InventoryRepository) = InventoryActions(repository)
 
     @Provides
     fun monitoringActions(repository: MonitoringRepository) = MonitoringActions(repository)

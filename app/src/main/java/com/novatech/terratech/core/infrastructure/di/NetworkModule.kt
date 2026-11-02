@@ -5,6 +5,7 @@ import com.novatech.terratech.core.infrastructure.remote.TerraApi
 import com.novatech.terratech.iam.domain.repository.AccountRepository
 import com.novatech.terratech.iam.infrastructure.remote.AccountApi
 import com.novatech.terratech.iam.infrastructure.remote.SessionAuthorizationInterceptor
+import com.novatech.terratech.inventory.infrastructure.remote.InventoryApi
 import com.novatech.terratech.monitoring.infrastructure.remote.MonitoringApi
 import com.novatech.terratech.profile.infrastructure.remote.ProfileApi
 import dagger.Module
@@ -43,4 +44,6 @@ object NetworkModule {
     @Provides fun profileApi(api: TerraApi): ProfileApi = api
 
     @Provides fun monitoringApi(api: TerraApi): MonitoringApi = api
+
+    @Provides fun inventoryApi(api: TerraApi): InventoryApi = api
 }
