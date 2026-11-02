@@ -23,6 +23,9 @@ fun AppToolbar(
             AppDestination.HISTORY,
             AppDestination.READING -> monitoringState.selectedSensor?.name.orEmpty()
             AppDestination.REGISTER_SENSOR -> stringResource(R.string.associate)
+            AppDestination.INVENTORY,
+            AppDestination.CREATE_INVENTORY,
+            AppDestination.EDIT_INVENTORY -> stringResource(R.string.inventory_title)
             else -> profileState.profile?.fundoName ?: "TerraTech"
         }
     TerraTechToolbar(

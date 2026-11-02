@@ -2,6 +2,8 @@ package com.novatech.terratech.core.presentation.navigation
 
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.novatech.terratech.inventory.presentation.navigation.CreateInventoryDestination
+import com.novatech.terratech.inventory.presentation.navigation.EditInventoryDestination
 import com.novatech.terratech.monitoring.presentation.navigation.CreateFieldDestination
 import com.novatech.terratech.monitoring.presentation.navigation.FieldSensorsDestination
 import com.novatech.terratech.monitoring.presentation.navigation.HistoryDestination
@@ -24,6 +26,14 @@ class AppNavigator(private val controller: NavHostController) {
                 restoreState = true
             }
         }
+    }
+
+    fun createInventory() {
+        controller.navigate(CreateInventoryDestination)
+    }
+
+    fun editInventory(inventoryId: Int) {
+        controller.navigate(EditInventoryDestination(inventoryId))
     }
 
     fun back() {
