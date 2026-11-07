@@ -1,9 +1,10 @@
 package com.novatech.terratech.inventory.presentation.navigation
 
+import com.novatech.terratech.inventory.domain.entity.InventoryDraft
+
 class InventoryNavigationActions(
     val refresh: () -> Unit,
     val clearMessage: () -> Unit,
-    val registerExisting: (Int, Int, String) -> Unit,
-    val registerNew: (String, String, Double, String, Int, String) -> Unit,
+    val register: (InventoryDraft) -> Unit,
     val updateStock: (Int, Int) -> Unit,
 )

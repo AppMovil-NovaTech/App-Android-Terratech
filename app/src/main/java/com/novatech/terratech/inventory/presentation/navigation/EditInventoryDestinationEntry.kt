@@ -24,9 +24,6 @@ fun NavGraphBuilder.editInventoryDestination(
         }
         EditInventoryScreen(
             item = state.items.find { it.id == destination.inventoryId },
-            product = state.products.find {
-                it.id == state.items.find { row -> row.id == destination.inventoryId }?.productId
-            },
             busy = state.busy,
             error = state.error,
             onSave = { quantity -> actions.updateStock(destination.inventoryId, quantity) },
