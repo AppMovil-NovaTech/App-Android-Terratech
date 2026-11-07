@@ -28,31 +28,32 @@ import com.novatech.terratech.core.presentation.component.PrimaryButton
 import com.novatech.terratech.inventory.presentation.component.InventoryErrorText
 import com.novatech.terratech.inventory.presentation.component.InventoryItemCard
 import com.novatech.terratech.inventory.presentation.state.InventoryState
+import com.novatech.terratech.monitoring.domain.entity.Field
 
 @Composable
 fun InventoryScreen(
     state: InventoryState,
+    fields: List<Field>,
     onCreate: () -> Unit,
     onEdit: (Int) -> Unit,
     onRefresh: () -> Unit,
 ) {
     var search by rememberSaveable { mutableStateOf("") }
     var stockFilter by rememberSaveable { mutableStateOf(0) }
-    var productType by rememberSaveable { mutableStateOf("") }
-    val productById = state.products.associateBy { it.id }
-    val types = state.products.map { it.type }.filter { it.isNotBlank() }.distinct().sorted()
-    val filtered =
-        state.items.filter { item ->
-            val product = productById[item.productId]
-            val matchesSearch =
-                product?.name.orEmpty().contains(search, ignoreCase = true) ||
-                    item.warehouseLocation.contains(search, ignoreCase = true)
-            val matchesStock =
-                stockFilter == 0 || (stockFilter == 1 && item.stockQuantity > 0) ||
-                    (stockFilter == 2 && item.stockQuantity == 0)
-            val matchesType = productType.isBlank() || product?.type == productType
-            matchesSearch && matchesStock && matchesType
-        }
+    var unitType by rememberSaveable { mutableStateOf("") }
+    val fieldsById = fields.associateBy { it.id }
+    val types = state.items.map { it.unitType }.filter { it.isNotBlank() }.distinct().sorted()
+    val filtered = state.items.filter { item ->
+        val fieldName = fieldsById[item.fieldId]?.name.orEmpty()
+        val matchesSearch = item.name.contains(search, ignoreCase = true) ||
+            fieldName.contains(search, ignoreCase = true) ||
+            item.fieldId.toString().contains(search)
+        val matchesStock = stockFilter == 0 ||
+            (stockFilter == 1 && item.stockQuantity > 0) ||
+            (stockFilter == 2 && item.stockQuantity == 0)
+        val matchesType = unitType.isBlank() || item.unitType == unitType
+        matchesSearch && matchesStock && matchesType
+    }
     LazyColumn(
         Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -76,15 +77,11 @@ fun InventoryScreen(
                         selected = stockFilter == filter,
                         onClick = { stockFilter = filter },
                         label = {
-                            Text(
-                                stringResource(
-                                    when (filter) {
-                                        1 -> R.string.inventory_available
-                                        2 -> R.string.inventory_out_of_stock
-                                        else -> R.string.inventory_all
-                                    }
-                                )
-                            )
+                            Text(stringResource(when (filter) {
+                                1 -> R.string.inventory_available
+                                2 -> R.string.inventory_out_of_stock
+                                else -> R.string.inventory_all
+                            }))
                         },
                     )
                 }
@@ -95,15 +92,15 @@ fun InventoryScreen(
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     item {
                         FilterChip(
-                            selected = productType.isBlank(),
-                            onClick = { productType = "" },
+                            selected = unitType.isBlank(),
+                            onClick = { unitType = "" },
                             label = { Text(stringResource(R.string.inventory_all_types)) },
                         )
                     }
                     items(types) { type ->
                         FilterChip(
-                            selected = productType == type,
-                            onClick = { productType = type },
+                            selected = unitType == type,
+                            onClick = { unitType = type },
                             label = { Text(type) },
                         )
                     }
@@ -118,15 +115,10 @@ fun InventoryScreen(
             }
         }
         if (filtered.isEmpty() && !state.busy) {
-            item {
-                EmptyCard(
-                    stringResource(R.string.inventory_empty),
-                    stringResource(R.string.inventory_empty_help),
-                )
-            }
+            item { EmptyCard(stringResource(R.string.inventory_empty), stringResource(R.string.inventory_empty_help)) }
         }
         items(filtered, key = { it.id }) { item ->
-            InventoryItemCard(item, productById[item.productId], state.busy, onEdit)
+            InventoryItemCard(item, fieldsById[item.fieldId]?.name, state.busy, onEdit)
         }
     }
 }
