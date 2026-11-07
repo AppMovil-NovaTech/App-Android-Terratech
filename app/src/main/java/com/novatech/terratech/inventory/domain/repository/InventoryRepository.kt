@@ -1,17 +1,11 @@
 package com.novatech.terratech.inventory.domain.repository
 
+import com.novatech.terratech.inventory.domain.entity.InventoryDraft
 import com.novatech.terratech.inventory.domain.entity.InventoryItem
-import com.novatech.terratech.inventory.domain.entity.InventoryProduct
 import com.novatech.terratech.inventory.domain.entity.InventorySnapshot
 
 interface InventoryRepository {
     suspend fun load(): InventorySnapshot
-    suspend fun register(productId: Int, quantity: Int, location: String): InventoryItem
+    suspend fun register(draft: InventoryDraft): InventoryItem
     suspend fun updateStock(id: Int, quantity: Int): InventoryItem
-    suspend fun addProduct(
-        name: String,
-        description: String,
-        price: Double,
-        type: String,
-    ): InventoryProduct
 }
