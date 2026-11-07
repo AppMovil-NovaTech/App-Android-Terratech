@@ -25,13 +25,11 @@ import com.novatech.terratech.core.presentation.component.EmptyCard
 import com.novatech.terratech.core.presentation.component.PageTitle
 import com.novatech.terratech.core.presentation.component.PrimaryButton
 import com.novatech.terratech.inventory.domain.entity.InventoryItem
-import com.novatech.terratech.inventory.domain.entity.InventoryProduct
 import com.novatech.terratech.inventory.presentation.component.InventoryErrorText
 
 @Composable
 fun EditInventoryScreen(
     item: InventoryItem?,
-    product: InventoryProduct?,
     busy: Boolean,
     error: String?,
     onSave: (Int) -> Unit,
@@ -43,7 +41,7 @@ fun EditInventoryScreen(
         Modifier.fillMaxSize().padding(PaddingValues(16.dp)),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        PageTitle(stringResource(R.string.inventory_update), product?.name)
+        PageTitle(stringResource(R.string.inventory_update), item?.name)
         if (item == null) {
             EmptyCard(stringResource(R.string.inventory_item_not_found))
         } else {
