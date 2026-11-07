@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.novatech.terratech.core.domain.Failure
 import com.novatech.terratech.inventory.application.usecase.InventoryActions
+import com.novatech.terratech.inventory.domain.entity.InventoryDraft
 import com.novatech.terratech.inventory.presentation.state.InventoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -31,39 +32,21 @@ class InventoryViewModel @Inject constructor(private val actions: InventoryActio
     }
 
     fun clearMessage() {
-        mutable.update { it.copy(error = null, saved = false, partialProductCreated = false) }
+        mutable.update { it.copy(error = null, saved = false) }
     }
 
     fun refresh() {
         if (mutable.value.busy) return
         launch {
             val snapshot = actions.load()
-            mutable.update { it.copy(items = snapshot.items, products = snapshot.products) }
+            mutable.update { it.copy(items = snapshot.items) }
         }
     }
 
-    fun registerExisting(productId: Int, quantity: Int, location: String) {
+    fun register(draft: InventoryDraft) {
         launch {
-            val result = actions.register(productId, quantity, location)
+            val result = actions.register(draft)
             mutable.update { it.copy(items = it.items + result, saved = true) }
-        }
-    }
-
-    fun registerNew(
-        name: String,
-        description: String,
-        price: Double,
-        type: String,
-        quantity: Int,
-        location: String,
-    ) {
-        launch {
-            val product = actions.addProduct(name, description, price, type)
-            mutable.update { it.copy(products = it.products + product, partialProductCreated = true) }
-            val result = actions.register(product.id, quantity, location)
-            mutable.update {
-                it.copy(items = it.items + result, saved = true, partialProductCreated = false)
-            }
         }
     }
 
@@ -78,7 +61,7 @@ class InventoryViewModel @Inject constructor(private val actions: InventoryActio
 
     private fun launch(block: suspend () -> Unit) {
         if (mutable.value.busy) return
-        mutable.update { it.copy(busy = true, error = null, saved = false, partialProductCreated = false) }
+        mutable.update { it.copy(busy = true, error = null, saved = false) }
         val requestUserId = currentUserId
         activeRequest = viewModelScope.launch {
             try {

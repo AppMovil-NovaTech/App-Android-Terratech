@@ -32,7 +32,13 @@ internal fun TerraTechNavHost(
     NavHost(navController = navController, startDestination = HomeGraph) {
         homeGraph(navigator, session, profileState, monitoringState)
         monitoringGraph(navigator, monitoringState, profileState, monitoringActions)
-        inventoryGraph(navigator, inventoryState, inventoryActions)
+        inventoryGraph(
+            navigator,
+            inventoryState,
+            inventoryActions,
+            profileState.profile?.id,
+            monitoringState.fields,
+        )
         profileGraph(
             navigator,
             session,

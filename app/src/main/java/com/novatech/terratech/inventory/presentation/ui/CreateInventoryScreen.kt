@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -29,35 +28,39 @@ import androidx.compose.ui.unit.dp
 import com.novatech.terratech.R
 import com.novatech.terratech.core.presentation.component.PageTitle
 import com.novatech.terratech.core.presentation.component.PrimaryButton
+import com.novatech.terratech.inventory.domain.entity.InventoryDraft
 import com.novatech.terratech.inventory.presentation.component.InventoryErrorText
 import com.novatech.terratech.inventory.presentation.state.InventoryState
+import com.novatech.terratech.monitoring.domain.entity.Field
 
 @Composable
 fun CreateInventoryScreen(
     state: InventoryState,
-    onRegisterExisting: (Int, Int, String) -> Unit,
-    onRegisterNew: (String, String, Double, String, Int, String) -> Unit,
+    profileId: Int?,
+    fields: List<Field>,
+    onRegister: (InventoryDraft) -> Unit,
     onCancel: () -> Unit,
 ) {
-    var newProduct by rememberSaveable { mutableStateOf(false) }
-    var selectedProductId by rememberSaveable { mutableIntStateOf(0) }
-    var productSearch by rememberSaveable { mutableStateOf("") }
+    val ownFields = fields.filter { it.profileId == profileId && it.id > 0 }
+    var fieldId by rememberSaveable { mutableIntStateOf(0) }
     var name by rememberSaveable { mutableStateOf("") }
-    var description by rememberSaveable { mutableStateOf("") }
-    var type by rememberSaveable { mutableStateOf("") }
-    var price by rememberSaveable { mutableStateOf("0") }
+    var unitType by rememberSaveable { mutableStateOf("Sacks") }
     var quantity by rememberSaveable { mutableStateOf("") }
-    var location by rememberSaveable { mutableStateOf("") }
+    var averageWeight by rememberSaveable { mutableStateOf("") }
+    var price by rememberSaveable { mutableStateOf("") }
+    var imageUrl by rememberSaveable { mutableStateOf("") }
     var validationError by rememberSaveable { mutableStateOf(false) }
     val parsedQuantity = quantity.toIntOrNull()
+    val parsedWeight = averageWeight.replace(',', '.').toDoubleOrNull()
     val parsedPrice = price.replace(',', '.').toDoubleOrNull()
     val valid =
-        parsedQuantity != null && parsedQuantity >= 0 &&
-            if (newProduct) {
-                name.isNotBlank() && type.isNotBlank() && parsedPrice != null &&
-                    parsedPrice.isFinite() && parsedPrice >= 0
-            } else selectedProductId > 0
-    val products = state.products.filter { it.name.contains(productSearch, ignoreCase = true) }
+        profileId != null && profileId > 0 && ownFields.any { it.id == fieldId } &&
+            name.isNotBlank() && unitType.isNotBlank() &&
+            parsedQuantity != null && parsedQuantity > 0 &&
+            parsedWeight != null && parsedWeight.isFinite() && parsedWeight > 0.0 &&
+            parsedPrice != null && parsedPrice.isFinite() && parsedPrice > 0.0 &&
+            (imageUrl.startsWith("https://", ignoreCase = true) ||
+                imageUrl.startsWith("http://", ignoreCase = true))
 
     LazyColumn(
         Modifier.fillMaxSize(),
@@ -65,82 +68,39 @@ fun CreateInventoryScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item { PageTitle(stringResource(R.string.inventory_add), stringResource(R.string.inventory_add_subtitle)) }
-        item {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(
-                    selected = !newProduct,
-                    onClick = { newProduct = false; validationError = false },
-                    label = { Text(stringResource(R.string.inventory_existing_product)) },
-                )
-                FilterChip(
-                    selected = newProduct,
-                    onClick = { newProduct = true; validationError = false },
-                    label = { Text(stringResource(R.string.inventory_new_product)) },
-                )
-            }
-        }
-        if (!newProduct) {
-            item {
-                OutlinedTextField(
-                    value = productSearch,
-                    onValueChange = { productSearch = it },
-                    label = { Text(stringResource(R.string.inventory_find_product)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-            if (products.isEmpty()) {
-                item { Text(stringResource(R.string.inventory_no_products)) }
-            }
-            items(products, key = { it.id }) { product ->
+        if (profileId == null || profileId <= 0) {
+            item { Text(stringResource(R.string.inventory_profile_required)) }
+        } else if (ownFields.isEmpty()) {
+            item { Text(stringResource(R.string.inventory_field_required)) }
+        } else {
+            item { Text(stringResource(R.string.inventory_select_field)) }
+            items(ownFields, key = { it.id }) { field ->
                 Row(
-                    Modifier.fillMaxWidth().clickable { selectedProductId = product.id },
+                    Modifier.fillMaxWidth().clickable { fieldId = field.id },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    RadioButton(
-                        selected = selectedProductId == product.id,
-                        onClick = { selectedProductId = product.id },
-                    )
-                    Text(product.name + " · " + product.type)
+                    RadioButton(selected = fieldId == field.id, onClick = { fieldId = field.id })
+                    Text(field.name)
                 }
             }
-        } else {
-            item {
-                OutlinedTextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    label = { Text(stringResource(R.string.inventory_name)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                )
-            }
-            item {
-                OutlinedTextField(
-                    value = type,
-                    onValueChange = { type = it },
-                    label = { Text(stringResource(R.string.inventory_type)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                )
-            }
-            item {
-                OutlinedTextField(
-                    value = description,
-                    onValueChange = { description = it },
-                    label = { Text(stringResource(R.string.inventory_description)) },
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-            item {
-                OutlinedTextField(
-                    value = price,
-                    onValueChange = { price = it },
-                    label = { Text(stringResource(R.string.inventory_price)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                )
-            }
+        }
+        item {
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text(stringResource(R.string.inventory_name)) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        item {
+            OutlinedTextField(
+                value = unitType,
+                onValueChange = { unitType = it },
+                label = { Text(stringResource(R.string.inventory_type)) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
         item {
             OutlinedTextField(
@@ -148,37 +108,60 @@ fun CreateInventoryScreen(
                 onValueChange = { quantity = it },
                 label = { Text(stringResource(R.string.inventory_quantity)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
             )
         }
         item {
             OutlinedTextField(
-                value = location,
-                onValueChange = { location = it },
-                label = { Text(stringResource(R.string.inventory_location)) },
+                value = averageWeight,
+                onValueChange = { averageWeight = it },
+                label = { Text(stringResource(R.string.inventory_weight)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        item {
+            OutlinedTextField(
+                value = price,
+                onValueChange = { price = it },
+                label = { Text(stringResource(R.string.inventory_price)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        item {
+            OutlinedTextField(
+                value = imageUrl,
+                onValueChange = { imageUrl = it },
+                label = { Text(stringResource(R.string.inventory_image_url)) },
+                singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
         if (validationError) item { Text(stringResource(R.string.inventory_invalid_form)) }
         if (state.error != null) item { InventoryErrorText(state.error) }
-        if (state.partialProductCreated && state.error != null) {
-            item { Text(stringResource(R.string.inventory_partial_created)) }
-        }
         if (state.busy) item { CircularProgressIndicator() }
         item {
-            PrimaryButton(stringResource(R.string.save), !state.busy) {
+            PrimaryButton(stringResource(R.string.save), !state.busy && profileId != null && ownFields.isNotEmpty()) {
                 if (!valid) {
                     validationError = true
                 } else {
                     validationError = false
-                    val units = parsedQuantity ?: return@PrimaryButton
-                    if (newProduct) {
-                        onRegisterNew(
-                            name, description, parsedPrice ?: return@PrimaryButton,
-                            type, units, location,
+                    onRegister(
+                        InventoryDraft(
+                            name = name.trim(),
+                            fieldId = fieldId,
+                            profileId = profileId ?: return@PrimaryButton,
+                            quantity = parsedQuantity ?: return@PrimaryButton,
+                            unitType = unitType.trim(),
+                            averageWeightPerUnitKg = parsedWeight ?: return@PrimaryButton,
+                            price = parsedPrice ?: return@PrimaryButton,
+                            imageUrl = imageUrl.trim(),
                         )
-                    } else onRegisterExisting(selectedProductId, units, location)
+                    )
                 }
             }
         }

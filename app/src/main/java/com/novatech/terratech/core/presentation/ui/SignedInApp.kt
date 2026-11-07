@@ -51,8 +51,7 @@ internal fun SignedInApp(
             InventoryNavigationActions(
                 inventoryViewModel::refresh,
                 inventoryViewModel::clearMessage,
-                inventoryViewModel::registerExisting,
-                inventoryViewModel::registerNew,
+                inventoryViewModel::register,
                 inventoryViewModel::updateStock,
             )
         }

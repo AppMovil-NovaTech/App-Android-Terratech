@@ -1,9 +1,7 @@
 package com.novatech.terratech.inventory.infrastructure.remote
 
 import com.novatech.terratech.inventory.infrastructure.remote.dto.CreateInventoryDto
-import com.novatech.terratech.inventory.infrastructure.remote.dto.CreateInventoryProductDto
 import com.novatech.terratech.inventory.infrastructure.remote.dto.InventoryDto
-import com.novatech.terratech.inventory.infrastructure.remote.dto.InventoryProductDto
 import com.novatech.terratech.inventory.infrastructure.remote.dto.UpdateStockDto
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,10 +18,4 @@ interface InventoryApi {
 
     @PUT("api/v1/inventories/{id}")
     suspend fun updateInventory(@Path("id") id: Int, @Body body: UpdateStockDto): InventoryDto
-
-    @GET("api/v1/products")
-    suspend fun products(): List<InventoryProductDto>
-
-    @POST("api/v1/products")
-    suspend fun registerProduct(@Body body: CreateInventoryProductDto): InventoryProductDto
 }
