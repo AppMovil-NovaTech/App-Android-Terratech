@@ -7,6 +7,7 @@ import com.novatech.terratech.iam.infrastructure.remote.AccountApi
 import com.novatech.terratech.iam.infrastructure.remote.SessionAuthorizationInterceptor
 import com.novatech.terratech.inventory.infrastructure.remote.InventoryApi
 import com.novatech.terratech.monitoring.infrastructure.remote.MonitoringApi
+import com.novatech.terratech.notifications.infrastructure.remote.NotificationApi
 import com.novatech.terratech.profile.infrastructure.remote.ProfileApi
 import dagger.Module
 import dagger.Provides
@@ -46,4 +47,6 @@ object NetworkModule {
     @Provides fun monitoringApi(api: TerraApi): MonitoringApi = api
 
     @Provides fun inventoryApi(api: TerraApi): InventoryApi = api
+
+    @Provides fun notificationApi(api: TerraApi): NotificationApi = api
 }
