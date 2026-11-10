@@ -11,6 +11,9 @@ import com.novatech.terratech.monitoring.application.usecase.MonitoringActions
 import com.novatech.terratech.monitoring.domain.repository.FieldWeatherRepository
 import com.novatech.terratech.monitoring.domain.repository.MonitoringRepository
 import com.novatech.terratech.monitoring.domain.repository.SatelliteImageRepository
+import com.novatech.terratech.notifications.application.usecase.NotificationActions
+import com.novatech.terratech.notifications.domain.repository.NotificationPreferencesRepository
+import com.novatech.terratech.notifications.domain.repository.NotificationRepository
 import com.novatech.terratech.profile.application.usecase.ProfileActions
 import com.novatech.terratech.profile.domain.repository.ProfileRepository
 import dagger.Module
@@ -38,4 +41,10 @@ object UseCaseModule {
 
     @Provides
     fun compareVegetationPeriod() = CompareVegetationPeriod()
+
+    @Provides
+    fun notificationActions(
+        notificationRepository: NotificationRepository,
+        preferencesRepository: NotificationPreferencesRepository,
+    ) = NotificationActions(notificationRepository, preferencesRepository)
 }
