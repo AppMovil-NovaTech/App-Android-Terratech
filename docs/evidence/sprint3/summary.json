@@ -1,0 +1,18 @@
+{
+  "unit": {
+    "notificationsSuite": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "Error": 0
+  },
+  "variant": "Debug",
+  "executedAt": "2026-11-09T20:20:00.000Z",
+  "device": "emulator-5554 (Android 16)",
+  "physicalDeviceTested": false,
+  "epic": "Epic 10: Notification Management",
+  "userStories": ["US27", "US28", "US30"],
+  "visualReview": "Notifications center and preferences screens verified on emulator"
+}
