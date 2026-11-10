@@ -20,7 +20,7 @@ class NotificationRepositoryImpl(
             val response = apiCall { api.getNotifications(profileId) }
             response.map { NotificationMapper.toDomain(it) }
         } catch (_: Exception) {
-            emptyList()
+            emptyList<NotificationItem>()
         }
 
         if (remoteItems.isNotEmpty()) {

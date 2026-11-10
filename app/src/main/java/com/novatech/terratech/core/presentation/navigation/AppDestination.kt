@@ -12,6 +12,8 @@ import com.novatech.terratech.monitoring.presentation.navigation.HistoryDestinat
 import com.novatech.terratech.monitoring.presentation.navigation.ReadingDestination
 import com.novatech.terratech.monitoring.presentation.navigation.RegisterSensorDestination
 import com.novatech.terratech.monitoring.presentation.navigation.SensorDestination
+import com.novatech.terratech.notifications.presentation.navigation.NotificationPreferencesDestination
+import com.novatech.terratech.notifications.presentation.navigation.NotificationsDestination
 import com.novatech.terratech.profile.presentation.navigation.ProfileDestination
 
 enum class AppDestination {
@@ -26,6 +28,8 @@ enum class AppDestination {
     INVENTORY,
     CREATE_INVENTORY,
     EDIT_INVENTORY,
+    NOTIFICATIONS,
+    NOTIFICATION_PREFERENCES,
     PROFILE;
 
     val isRoot: Boolean
@@ -38,7 +42,7 @@ enum class AppDestination {
         get() = this !in setOf(CREATE_FIELD, CREATE_INVENTORY, EDIT_INVENTORY)
 
     val canRefresh: Boolean
-        get() = this !in setOf(PROFILE, CREATE_FIELD, REGISTER_SENSOR, CREATE_INVENTORY, EDIT_INVENTORY)
+        get() = this !in setOf(PROFILE, CREATE_FIELD, REGISTER_SENSOR, CREATE_INVENTORY, EDIT_INVENTORY, NOTIFICATION_PREFERENCES)
 
     companion object {
         fun from(destination: NavDestination?): AppDestination =
@@ -53,6 +57,8 @@ enum class AppDestination {
                 destination?.hasRoute<InventoryDestination>() == true -> INVENTORY
                 destination?.hasRoute<CreateInventoryDestination>() == true -> CREATE_INVENTORY
                 destination?.hasRoute<EditInventoryDestination>() == true -> EDIT_INVENTORY
+                destination?.hasRoute<NotificationsDestination>() == true -> NOTIFICATIONS
+                destination?.hasRoute<NotificationPreferencesDestination>() == true -> NOTIFICATION_PREFERENCES
                 destination?.hasRoute<ProfileDestination>() == true -> PROFILE
                 else -> HOME
             }

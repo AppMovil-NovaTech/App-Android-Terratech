@@ -26,6 +26,7 @@ fun NavGraphBuilder.profileGraph(
                 onContinue =
                     if (hasFields) null else ({ navigator.createField(state.profile != null) }),
                 onSaveThresholds = actions.saveThresholds,
+                onNavigateToPreferences = actions.onNavigateToPreferences,
             )
         }
     }
