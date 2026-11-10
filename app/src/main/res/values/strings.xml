@@ -280,4 +280,28 @@
     <string name="inventory_current_stock">Current stock: %1$d units</string>
     <string name="inventory_new_quantity">New total stock (units)</string>
     <string name="inventory_item_not_found">Inventory item not found. Go back and refresh.</string>
+    <!-- EPIC10: Notifications Management -->
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_preferences">Notification preferences</string>
+    <string name="notifications_filter_all">All</string>
+    <string name="notifications_filter_unread">Unread</string>
+    <string name="notifications_filter_alerts">Alerts</string>
+    <string name="notifications_filter_reviews">Reviews</string>
+    <string name="notifications_empty">No notifications in this category.</string>
+    <string name="notification_view_review">View review</string>
+    <string name="notification_reply">Reply</string>
+    <string name="notification_preferences_types">Alert types</string>
+    <string name="notification_pref_humidity">Low moisture alerts</string>
+    <string name="notification_pref_humidity_desc">Receive alerts when moisture drops below threshold.</string>
+    <string name="notification_pref_nutrients">Critical nutrient alerts</string>
+    <string name="notification_pref_nutrients_desc">Receive alerts for N, P, K imbalances.</string>
+    <string name="notification_pref_reviews">New review notifications</string>
+    <string name="notification_pref_reviews_desc">Notices when farmers rate your products.</string>
+    <string name="notification_pref_system">System announcements</string>
+    <string name="notification_pref_system_desc">Status updates and maintenance.</string>
+    <string name="notification_preferences_channels">Delivery channels</string>
+    <string name="notification_channel_app">In-app notifications</string>
+    <string name="notification_channel_email">Email notifications</string>
+    <string name="notification_channel_sms">SMS text messages</string>
+    <string name="notification_preferences_updated">Preferences updated</string>
 </resources>

@@ -280,4 +280,28 @@
     <string name="inventory_current_stock">Stock actual: %1$d unidades</string>
     <string name="inventory_new_quantity">Nuevo stock total (unidades)</string>
     <string name="inventory_item_not_found">No se encontró el registro. Regresa y actualiza.</string>
+    <!-- EPIC10: Notifications Management -->
+    <string name="notifications_title">Notificaciones</string>
+    <string name="notifications_preferences">Configuración de notificaciones</string>
+    <string name="notifications_filter_all">Todas</string>
+    <string name="notifications_filter_unread">No leídas</string>
+    <string name="notifications_filter_alerts">Alertas</string>
+    <string name="notifications_filter_reviews">Reseñas</string>
+    <string name="notifications_empty">No tienes notificaciones en esta categoría.</string>
+    <string name="notification_view_review">Ver reseña</string>
+    <string name="notification_reply">Responder</string>
+    <string name="notification_preferences_types">Tipos de alertas</string>
+    <string name="notification_pref_humidity">Alertas de humedad baja</string>
+    <string name="notification_pref_humidity_desc">Recibir alertas cuando la humedad baje del umbral crítico.</string>
+    <string name="notification_pref_nutrients">Alertas de nutrientes críticos</string>
+    <string name="notification_pref_nutrients_desc">Recibir alertas de desbalance en Nitrógeno, Fósforo o Potasio.</string>
+    <string name="notification_pref_reviews">Notificaciones de nuevas reseñas</string>
+    <string name="notification_pref_reviews_desc">Avisos cuando los agricultores califiquen tus productos.</string>
+    <string name="notification_pref_system">Avisos del sistema</string>
+    <string name="notification_pref_system_desc">Actualizaciones de estado y mantenimiento de la plataforma.</string>
+    <string name="notification_preferences_channels">Canales de envío</string>
+    <string name="notification_channel_app">Notificación en app</string>
+    <string name="notification_channel_email">Correo electrónico</string>
+    <string name="notification_channel_sms">Mensaje de texto (SMS)</string>
+    <string name="notification_preferences_updated">Preferencias actualizadas</string>
 </resources>
