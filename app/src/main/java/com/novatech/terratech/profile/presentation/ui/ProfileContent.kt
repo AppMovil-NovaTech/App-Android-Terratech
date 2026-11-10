@@ -52,6 +52,7 @@ internal fun ProfileContent(
     onRequestLogout: () -> Unit,
     onContinue: (() -> Unit)? = null,
     onSaveThresholds: (Double, Double) -> Unit = { _, _ -> },
+    onNavigateToPreferences: () -> Unit = {},
 ) {
     val profile = state.profile
     var editingThresholds by rememberSaveable { mutableStateOf(false) }
@@ -134,6 +135,23 @@ internal fun ProfileContent(
                     enabled = !state.busy,
                     onConfigure = { editingThresholds = true },
                 )
+
+                FarmCard {
+                    Text(
+                        stringResource(R.string.notifications_preferences),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(
+                        stringResource(R.string.notification_pref_humidity_desc),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Muted,
+                    )
+                    PrimaryButton(
+                        stringResource(R.string.notifications_preferences),
+                        !state.busy,
+                        onNavigateToPreferences,
+                    )
+                }
             }
         }
         if (state.saved) {

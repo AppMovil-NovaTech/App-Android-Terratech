@@ -20,6 +20,7 @@ fun ProfileScreen(
     onLogout: () -> Unit,
     onContinue: (() -> Unit)? = null,
     onSaveThresholds: (Double, Double) -> Unit = { _, _ -> },
+    onNavigateToPreferences: () -> Unit = {},
 ) {
     var editing by rememberSaveable { mutableStateOf(false) }
     var confirmLogout by remember { mutableStateOf(false) }
@@ -34,6 +35,7 @@ fun ProfileScreen(
         onRefresh = onRefresh,
         onRequestLogout = { confirmLogout = true },
         onSaveThresholds = onSaveThresholds,
+        onNavigateToPreferences = onNavigateToPreferences,
     )
     if (confirmLogout) {
         LogoutConfirmationDialog(

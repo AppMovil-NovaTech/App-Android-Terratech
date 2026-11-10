@@ -15,6 +15,12 @@ import com.novatech.terratech.monitoring.infrastructure.implementation.FieldWeat
 import com.novatech.terratech.monitoring.infrastructure.implementation.MonitoringRepositoryImpl
 import com.novatech.terratech.monitoring.infrastructure.implementation.SatelliteImageRepositoryImpl
 import com.novatech.terratech.monitoring.infrastructure.remote.MonitoringApi
+import com.novatech.terratech.notifications.domain.repository.NotificationPreferencesRepository
+import com.novatech.terratech.notifications.domain.repository.NotificationRepository
+import com.novatech.terratech.notifications.infrastructure.implementation.NotificationPreferencesRepositoryImpl
+import com.novatech.terratech.notifications.infrastructure.implementation.NotificationRepositoryImpl
+import com.novatech.terratech.notifications.infrastructure.local.NotificationPreferencesStore
+import com.novatech.terratech.notifications.infrastructure.remote.NotificationApi
 import com.novatech.terratech.profile.domain.repository.ProfileRepository
 import com.novatech.terratech.profile.infrastructure.implementation.ProfileRepositoryImpl
 import com.novatech.terratech.profile.infrastructure.remote.ProfileApi
@@ -67,4 +73,14 @@ object RepositoryModule {
         api: MonitoringApi,
         db: TerraDatabase,
     ): SatelliteImageRepository = SatelliteImageRepositoryImpl(api, db)
+
+    @Provides
+    @Singleton
+    fun notificationPreferences(store: NotificationPreferencesStore): NotificationPreferencesRepository =
+        NotificationPreferencesRepositoryImpl(store)
+
+    @Provides
+    @Singleton
+    fun notifications(api: NotificationApi): NotificationRepository =
+        NotificationRepositoryImpl(api)
 }

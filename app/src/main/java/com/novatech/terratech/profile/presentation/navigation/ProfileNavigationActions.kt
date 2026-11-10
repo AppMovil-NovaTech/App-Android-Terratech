@@ -5,4 +5,5 @@ data class ProfileNavigationActions(
     val refresh: () -> Unit,
     val logout: () -> Unit,
     val saveThresholds: (Double, Double) -> Unit = { _, _ -> },
+    val onNavigateToPreferences: () -> Unit = {},
 )

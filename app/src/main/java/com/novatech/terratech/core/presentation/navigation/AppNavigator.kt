@@ -11,6 +11,8 @@ import com.novatech.terratech.monitoring.presentation.navigation.ReadingDestinat
 import com.novatech.terratech.monitoring.presentation.navigation.RegisterSensorDestination
 import com.novatech.terratech.monitoring.presentation.navigation.SensorDestination
 import com.novatech.terratech.monitoring.presentation.navigation.VegetationComparisonDestination
+import com.novatech.terratech.notifications.presentation.navigation.NotificationPreferencesDestination
+import com.novatech.terratech.notifications.presentation.navigation.NotificationsDestination
 
 class AppNavigator(private val controller: NavHostController) {
     fun topLevel(destination: TopLevelDestination) {
@@ -84,5 +86,13 @@ class AppNavigator(private val controller: NavHostController) {
 
     fun vegetationComparison(fieldId: Int) {
         controller.navigate(VegetationComparisonDestination(fieldId))
+    }
+
+    fun notifications() {
+        controller.navigate(NotificationsDestination)
+    }
+
+    fun notificationPreferences() {
+        controller.navigate(NotificationPreferencesDestination)
     }
 }

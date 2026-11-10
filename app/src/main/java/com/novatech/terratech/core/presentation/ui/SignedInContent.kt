@@ -31,6 +31,8 @@ internal fun SignedInContent(
     onBack: () -> Unit,
     onRefresh: () -> Unit,
     onSignIn: () -> Unit,
+    unreadNotificationsCount: Int = 0,
+    onNavigateToNotifications: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     Scaffold(
@@ -41,7 +43,15 @@ internal fun SignedInContent(
             if (monitoringState.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
             if (destination != AppDestination.PROFILE) Notice(monitoringState.error)
             SessionExpiredNotice(sessionExpired, onSignIn)
-            AppToolbar(destination, monitoringState, profileState, onBack, onRefresh)
+            AppToolbar(
+                destination = destination,
+                monitoringState = monitoringState,
+                profileState = profileState,
+                onBack = onBack,
+                onRefresh = onRefresh,
+                unreadNotificationsCount = unreadNotificationsCount,
+                onNavigateToNotifications = onNavigateToNotifications,
+            )
             Box(Modifier.weight(1f)) { content() }
         }
     }

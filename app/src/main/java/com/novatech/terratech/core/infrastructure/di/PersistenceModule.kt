@@ -8,6 +8,7 @@ import com.novatech.terratech.core.infrastructure.local.TerraDatabase
 import com.novatech.terratech.core.infrastructure.local.ThresholdsMigration
 import com.novatech.terratech.core.infrastructure.local.WeatherAndSatelliteMigration
 import com.novatech.terratech.iam.infrastructure.local.SessionStore
+import com.novatech.terratech.notifications.infrastructure.local.NotificationPreferencesStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +31,11 @@ object PersistenceModule {
             .build()
 
     @Provides @Singleton fun store(@ApplicationContext context: Context) = SessionStore(context)
+
+    @Provides
+    @Singleton
+    fun notificationPreferencesStore(@ApplicationContext context: Context) =
+        NotificationPreferencesStore(context)
 
     @Provides @Singleton fun scope() = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 }

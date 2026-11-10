@@ -26,6 +26,8 @@ import com.novatech.terratech.inventory.presentation.viewmodel.InventoryViewMode
 import com.novatech.terratech.monitoring.presentation.navigation.navigationActions
 import com.novatech.terratech.monitoring.presentation.state.MonitoringState
 import com.novatech.terratech.monitoring.presentation.viewmodel.MonitoringViewModel
+import com.novatech.terratech.notifications.presentation.viewmodel.NotificationPreferencesViewModel
+import com.novatech.terratech.notifications.presentation.viewmodel.NotificationsViewModel
 import com.novatech.terratech.profile.presentation.navigation.ProfileNavigationActions
 import com.novatech.terratech.profile.presentation.state.ProfileState
 import com.novatech.terratech.profile.presentation.viewmodel.ProfileViewModel
@@ -40,12 +42,21 @@ internal fun SignedInApp(
     profileViewModel: ProfileViewModel,
     monitoringViewModel: MonitoringViewModel,
     inventoryViewModel: InventoryViewModel = hiltViewModel(),
+    notificationsViewModel: NotificationsViewModel = hiltViewModel(),
+    preferencesViewModel: NotificationPreferencesViewModel = hiltViewModel(),
 ) {
     val observedInventoryState by inventoryViewModel.state.collectAsStateWithLifecycle()
     val inventoryState =
         if (observedInventoryState.userId == session.userId) observedInventoryState
         else InventoryState()
     LaunchedEffect(session.userId) { inventoryViewModel.loadForUser(session.userId) }
+
+    val notificationsState by notificationsViewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(session.userId, profileState.profile?.id) {
+        val profileId = profileState.profile?.id ?: 1
+        notificationsViewModel.load(session.userId, profileId)
+    }
+
     val inventoryActions =
         remember(inventoryViewModel) {
             InventoryNavigationActions(
@@ -66,12 +77,13 @@ internal fun SignedInApp(
     val monitoringActions =
         remember(monitoringViewModel) { monitoringViewModel.navigationActions() }
     val profileActions =
-        remember(profileViewModel, accountViewModel) {
+        remember(profileViewModel, accountViewModel, navigator) {
             ProfileNavigationActions(
                 profileViewModel::save,
                 profileViewModel::refresh,
                 accountViewModel::logout,
                 profileViewModel::saveThresholds,
+                navigator::notificationPreferences,
             )
         }
     var reauth by rememberSaveable { mutableStateOf(false) }
@@ -117,12 +129,16 @@ internal fun SignedInApp(
         },
         onRefresh = {
             if (destination == AppDestination.INVENTORY) inventoryViewModel.refresh()
-            else monitoringViewModel.refresh()
+            else if (destination == AppDestination.NOTIFICATIONS) {
+                notificationsViewModel.load(session.userId, profileState.profile?.id ?: 1)
+            } else monitoringViewModel.refresh()
         },
         onSignIn = {
             previousToken = session.token
             reauth = true
         },
+        unreadNotificationsCount = notificationsState.unreadCount,
+        onNavigateToNotifications = navigator::notifications,
     ) {
         TerraTechNavHost(
             navController = navController,
@@ -134,6 +150,8 @@ internal fun SignedInApp(
             inventoryState = inventoryState,
             inventoryActions = inventoryActions,
             profileActions = profileActions,
+            notificationsViewModel = notificationsViewModel,
+            preferencesViewModel = preferencesViewModel,
         )
     }
 }
