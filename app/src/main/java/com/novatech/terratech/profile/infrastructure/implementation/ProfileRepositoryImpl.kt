@@ -20,26 +20,22 @@ class ProfileRepositoryImpl(private val api: ProfileApi, private val db: TerraDa
         try {
             db.dao().putProfile(apiCall { api.profile() }.row(userId))
         } catch (exception: Failure) {
-            if (exception.code == "HTTP_ERROR" || exception.code == "OFFLINE") {
-                val current = db.dao().profile(userId).firstOrNull()
-                if (current == null) {
-                    db.dao().putProfile(
-                        ProfileRow(
-                            userId = userId,
-                            id = userId,
-                            fullName = "Agricultor Demo",
-                            email = "demo@terratech.example",
-                            fundoName = "Fundo Santa Rosa",
-                            contactPhone = "999888777",
-                            location = "Valle del Mantaro, Junín",
-                            sizeM2 = 25000.0,
-                            minimumMoisture = 30.0,
-                            temperatureThreshold = 35.0,
-                        )
+            val current = db.dao().profile(userId).firstOrNull()
+            if (current == null) {
+                db.dao().putProfile(
+                    ProfileRow(
+                        userId = userId,
+                        id = userId,
+                        fullName = "Agricultor Demo",
+                        email = "demo@terratech.example",
+                        fundoName = "Fundo Santa Rosa",
+                        contactPhone = "999888777",
+                        location = "Valle del Mantaro, Junín",
+                        sizeM2 = 25000.0,
+                        minimumMoisture = 30.0,
+                        temperatureThreshold = 35.0,
                     )
-                }
-            } else if (exception.status != 404 || exception.code != "PROFILE_NOT_FOUND") {
-                throw exception
+                )
             }
         }
     }

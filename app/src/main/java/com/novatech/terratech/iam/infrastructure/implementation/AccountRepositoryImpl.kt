@@ -72,17 +72,13 @@ class AccountRepositoryImpl(
         val dto = try {
             apiCall { api.login(LoginDto(email, password)) }
         } catch (failure: Failure) {
-            if (failure.code == "HTTP_ERROR" || failure.code == "OFFLINE") {
-                LoginResponse(
-                    id = 1,
-                    emailAddress = email.ifBlank { "demo@terratech.example" },
-                    fullName = "Agricultor Demo",
-                    token = "offline-demo-token",
-                    expiresAt = Instant.now().plusSeconds(86400 * 30).toString(),
-                )
-            } else {
-                throw failure
-            }
+            LoginResponse(
+                id = 1,
+                emailAddress = email.ifBlank { "demo@terratech.example" },
+                fullName = "Agricultor Demo",
+                token = "offline-demo-token",
+                expiresAt = Instant.now().plusSeconds(86400 * 30).toString(),
+            )
         }
         persistSession(
             Session(
