@@ -9,7 +9,6 @@ import com.novatech.terratech.iam.infrastructure.local.SessionStore
 import com.novatech.terratech.iam.infrastructure.remote.AccountApi
 import com.novatech.terratech.iam.infrastructure.remote.dto.AccountEmailRequestDto
 import com.novatech.terratech.iam.infrastructure.remote.dto.LoginDto
-import com.novatech.terratech.iam.infrastructure.remote.dto.LoginResponse
 import com.novatech.terratech.iam.infrastructure.remote.dto.RegisterDto
 import java.time.Instant
 import kotlinx.coroutines.CancellationException
@@ -69,17 +68,7 @@ class AccountRepositoryImpl(
     }
 
     override suspend fun login(email: String, password: String) {
-        val dto = try {
-            apiCall { api.login(LoginDto(email, password)) }
-        } catch (failure: Failure) {
-            LoginResponse(
-                id = 1,
-                emailAddress = email.ifBlank { "demo@terratech.example" },
-                fullName = "Agricultor Demo",
-                token = "offline-demo-token",
-                expiresAt = Instant.now().plusSeconds(86400 * 30).toString(),
-            )
-        }
+        val dto = apiCall { api.login(LoginDto(email, password)) }
         persistSession(
             Session(
                 dto.id,
