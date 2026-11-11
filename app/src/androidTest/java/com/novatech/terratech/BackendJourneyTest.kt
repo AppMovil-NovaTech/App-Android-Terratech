@@ -26,9 +26,11 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.width
+import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.FileInputStream
+import java.time.LocalDate
 import java.util.UUID
 import org.junit.Assume
 import org.junit.Rule
@@ -80,6 +82,52 @@ class BackendJourneyTest {
     private fun capture(name: String) {
         compose.waitForIdle()
         shell("screencap -p /sdcard/Download/terratech-$name.png")
+    }
+
+    @Test
+    fun publicExternalServicesEvidence() {
+        val args = InstrumentationRegistry.getArguments()
+        Assume.assumeTrue(args.getString("tb2PublicJourney") == "true")
+        val email = requireNotNull(args.getString("tb2Email"))
+        val password = requireNotNull(args.getString("tb2Password"))
+
+        visible(R.string.welcome)
+        input(R.string.email, email)
+        input(R.string.password, password)
+        click(R.string.login)
+        visible(R.string.new_field, 60000)
+
+        compose.onNodeWithTag("tab-fields").performClick()
+        visible(R.string.view_field, 60000)
+        compose.onNodeWithTag("tab-home").performClick()
+        capture("tb2-home")
+        compose.onNodeWithTag("tab-fields").performClick()
+        click(R.string.view_field)
+        visible(R.string.weather_forecast)
+        compose.waitUntil(60000) {
+            compose.onAllNodes(hasText("°C", substring = true)).fetchSemanticsNodes().isNotEmpty()
+        }
+        capture("tb2-weather-forecast")
+
+        click(R.string.satellite_view)
+        visible(R.string.ndvi_high, 30000)
+        compose.onAllNodes(hasScrollToIndexAction()).onLast()
+            .performScrollToNode(hasText(text(R.string.ndvi_high)))
+        capture("tb2-satellite-viewer")
+        click(R.string.select_date)
+        capture("tb2-satellite-date-picker")
+        click(R.string.cancel)
+        click(R.string.compare_vegetation)
+        input(R.string.select_period_a, LocalDate.now().minusDays(30).toString())
+        input(R.string.select_period_b, LocalDate.now().toString())
+        click(R.string.compare_action)
+        compose.waitUntil(30000) {
+            compose.onAllNodes(hasText("NDVI variation:", substring = true)).fetchSemanticsNodes().isNotEmpty()
+        }
+        Espresso.closeSoftKeyboard()
+        compose.onAllNodes(hasScrollToIndexAction()).onLast()
+            .performScrollToNode(hasText("NDVI variation:", substring = true))
+        capture("tb2-vegetation-comparison")
     }
 
     @Test
