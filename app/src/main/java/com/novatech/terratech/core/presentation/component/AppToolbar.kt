@@ -14,6 +14,8 @@ fun AppToolbar(
     profileState: ProfileState,
     onBack: () -> Unit,
     onRefresh: () -> Unit,
+    unreadNotificationsCount: Int = 0,
+    onNavigateToNotifications: (() -> Unit)? = null,
 ) {
     if (!destination.showToolbar) return
     val title =
@@ -23,12 +25,19 @@ fun AppToolbar(
             AppDestination.HISTORY,
             AppDestination.READING -> monitoringState.selectedSensor?.name.orEmpty()
             AppDestination.REGISTER_SENSOR -> stringResource(R.string.associate)
+            AppDestination.INVENTORY,
+            AppDestination.CREATE_INVENTORY,
+            AppDestination.EDIT_INVENTORY -> stringResource(R.string.inventory_title)
+            AppDestination.NOTIFICATIONS -> stringResource(R.string.notifications_title)
+            AppDestination.NOTIFICATION_PREFERENCES -> stringResource(R.string.notifications_preferences)
             else -> profileState.profile?.fundoName ?: "TerraTech"
         }
     TerraTechToolbar(
         title = title,
         busy = monitoringState.busy,
+        unreadNotificationsCount = unreadNotificationsCount,
         onBack = if (destination.isRoot) null else onBack,
         onRefresh = if (destination.canRefresh) onRefresh else null,
+        onNotifications = if (destination != AppDestination.NOTIFICATIONS) onNavigateToNotifications else null,
     )
 }

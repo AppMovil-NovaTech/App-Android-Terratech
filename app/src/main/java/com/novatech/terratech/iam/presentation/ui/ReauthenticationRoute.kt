@@ -11,6 +11,9 @@ fun ReauthenticationRoute(
     previousToken: String,
     onLogin: (String, String) -> Unit,
     onClear: () -> Unit,
+    onLogout: () -> Unit = {},
+    onRequestVerification: (String) -> Unit = {},
+    onRequestPasswordReset: (String) -> Unit = {},
     onDismiss: () -> Unit,
 ) {
     BackHandler(onBack = onDismiss)
@@ -22,6 +25,9 @@ fun ReauthenticationRoute(
         onLogin = onLogin,
         onRegister = { _, _, _, _ -> },
         onClear = onClear,
+        onLogout = onLogout,
         reauth = true,
+        onRequestVerification = onRequestVerification,
+        onRequestPasswordReset = onRequestPasswordReset,
     )
 }

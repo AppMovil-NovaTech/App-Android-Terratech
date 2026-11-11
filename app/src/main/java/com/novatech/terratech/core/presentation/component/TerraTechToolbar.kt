@@ -2,7 +2,10 @@ package com.novatech.terratech.core.presentation.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,8 +23,10 @@ import com.novatech.terratech.R
 fun TerraTechToolbar(
     title: String,
     busy: Boolean,
+    unreadNotificationsCount: Int = 0,
     onBack: (() -> Unit)? = null,
     onRefresh: (() -> Unit)? = null,
+    onNotifications: (() -> Unit)? = null,
 ) {
     TopAppBar(
         title = {
@@ -39,6 +44,26 @@ fun TerraTechToolbar(
                 }
         },
         actions = {
+            if (onNotifications != null) {
+                IconButton(onClick = onNotifications, enabled = !busy) {
+                    BadgedBox(
+                        badge = {
+                            if (unreadNotificationsCount > 0) {
+                                Badge {
+                                    Text(
+                                        text = if (unreadNotificationsCount > 99) "99+" else unreadNotificationsCount.toString()
+                                    )
+                                }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            Icons.Default.Notifications,
+                            contentDescription = stringResource(R.string.notifications_title),
+                        )
+                    }
+                }
+            }
             if (onRefresh != null)
                 IconButton(onClick = onRefresh, enabled = !busy) {
                     Icon(Icons.Outlined.Refresh, stringResource(R.string.retry))

@@ -1,3 +1,4 @@
+
 <resources>
     <string name="app_name">TerraTech</string>
     <string name="tagline">Your land, connected</string>
@@ -106,7 +107,7 @@
     <string name="units_note" formatted="false">N/P/K in ppm · temperature in °C · moisture in %</string>
     <string name="use_profile">Go to profile</string>
     <string name="sensor_registered">Sensor registered</string>
-<string name="reading_count">Readings: %1$d</string>
+    <string name="reading_count">Readings: %1$d</string>
     <string name="step_of">Step %1$d of %2$d</string>
     <string name="continue_action">Continue</string>
     <string name="create_field">Create field</string>
@@ -170,4 +171,137 @@
     <string name="map_ready">Map ready</string>
     <string name="field_map">Field map</string>
     <string name="map_unavailable">Map unavailable</string>
+
+    <!-- US13: soil fertility -->
+    <string name="fertility_title">Soil fertility assessment</string>
+    <string name="fertility_scope">Soil moisture status for the selected sensor. This is not a fertility classification of the entire field.</string>
+    <string name="fertility_no_sensors">No sensors are associated with this field. Fertility measurements are not available yet.</string>
+    <string name="fertility_select_sensor">Select a sensor to see its available measurements.</string>
+    <string name="fertility_no_readings">The selected sensor has no readings yet.</string>
+    <string name="fertility_sensor_name">Sensor: %1$s</string>
+    <string name="fertility_measured_at">Reading: %1$s</string>
+    <string name="fertility_moisture_value">Soil moisture: %1$s%%</string>
+    <string name="fertility_stale">This reading is older than 30 minutes. Its status is not classified as current.</string>
+    <string name="fertility_invalid">This moisture measurement is out of range and cannot be classified.</string>
+    <string name="fertility_critical">Critical moisture</string>
+    <string name="fertility_moderate">Moderate moisture</string>
+    <string name="fertility_optimal">Optimal moisture (project threshold)</string>
+    <string name="fertility_action_critical">US13 guideline: assess irrigation and fertilization within the next 2 hours. Confirm the sensor data and crop needs first.</string>
+    <string name="fertility_action_moderate">US13 guideline: monitor soil conditions again within 12 hours.</string>
+    <string name="fertility_action_optimal">US13 guideline: maintain the current plan and continue monitoring.</string>
+    <string name="fertility_nutrients">Measured nutrients: N %1$s ppm · P %2$s ppm · K %3$s ppm</string>
+    <string name="fertility_nutrients_note">NPK values are shown without a fertility rating because crop-specific reference ranges have not been defined.</string>
+    <string name="fertility_legend_title">Moisture thresholds</string>
+    <string name="fertility_legend_optimal" formatted="false">Green: above 60% · Maintain the current plan</string>
+    <string name="fertility_legend_moderate" formatted="false">Yellow: 30% to 60% · Monitor in 12 hours</string>
+    <string name="fertility_legend_critical" formatted="false">Red: below 30% · Assess irrigation and fertilization in 2 hours</string>
+    <string name="fertility_geo_limit">Geographic fertility zones cannot be drawn yet: the available sensor records do not contain their position within the field.</string>
+
+    <!-- General alerts, weather and satellite features -->
+    <string name="alert_thresholds">Agricultural alert thresholds</string>
+    <string name="thresholds_help">Set reference limits to receive alerts when soil conditions become critical.</string>
+    <string name="min_moisture_label">Minimum soil moisture</string>
+    <string name="max_temp_label">Maximum soil temperature</string>
+    <string name="edit_thresholds">Configure thresholds</string>
+    <string name="thresholds_saved">Alert thresholds updated</string>
+    <string name="moisture_threshold_dialog_title">Configure alert thresholds</string>
+    <string name="moisture_threshold_help">Recommended: 30%%. Below this level, soil dryness alert will be shown.</string>
+    <string name="temp_threshold_help">Recommended: 35°C. Above this level, thermal stress alert will be shown.</string>
+    <string name="error_moisture_threshold" formatted="false">Moisture must be between 0% and 100%.</string>
+    <string name="error_temp_threshold">Temperature must be between 0°C and 60°C.</string>
+    <string name="weather_forecast">Weather forecast</string>
+    <string name="precipitation_24h">Rain 24h: %1$.0f%%</string>
+    <string name="expected_rain">Expected: %1$.1f mm</string>
+    <string name="temperature_val">%1$.1f °C</string>
+    <string name="humidity_val">Humidity: %1$.0f%%</string>
+    <string name="wind_speed_val">Wind: %1$.1f km/h</string>
+    <string name="weather_offline_badge">Offline data</string>
+    <string name="weather_service_unavailable">Weather service temporarily unavailable</string>
+    <string name="refresh_weather">Refresh weather</string>
+    <string name="irrigation_recommendation_title">Irrigation suspension recommended</string>
+    <string name="water_savings_label">Estimated water savings: %1$d L</string>
+    <string name="satellite_view">Satellite view</string>
+    <string name="map_view">Map view</string>
+    <string name="captured_at">Captured: %1$s</string>
+    <string name="ndvi_label">NDVI: %1$.2f</string>
+    <string name="cloud_coverage">Cloud: %1$.1f%%</string>
+    <string name="ndvi_low">Low vigor</string>
+    <string name="ndvi_moderate">Moderate vigor</string>
+    <string name="ndvi_high">High vigor</string>
+    <string name="select_date">Select date</string>
+    <string name="no_satellite_image">No satellite image available for this date</string>
+    <string name="compare_vegetation">Compare vegetation</string>
+    <string name="vegetation_comparison_title">Vegetation comparison</string>
+    <string name="select_period_a">First date (YYYY-MM-DD)</string>
+    <string name="select_period_b">Second date (YYYY-MM-DD)</string>
+    <string name="compare_action">Compare periods</string>
+    <string name="ndvi_variation">NDVI variation: %1$.2f (%2$.1f%%)</string>
+    <string name="earlier_capture">Earlier period</string>
+    <string name="later_capture">Later period</string>
+    <string name="registered_at">Registered: %1$s</string>
+    <string name="date_unavailable">Not available</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="resend_verification">Resend verification email</string>
+    <string name="verification_sent">If verification is required, we will send an email. Check your inbox and spam folder, then sign in.</string>
+    <string name="reset_requested">If this account exists, we will send a recovery link. Check your email to set a new password.</string>
+    <string name="email_not_verified">Verify your email before signing in. You can request another link below.</string>
+    <string name="email_unavailable">Email delivery is unavailable. Please try again later.</string>
+    <string name="email_rate_limited">Too many attempts. Wait a minute before trying again.</string>
+    <string name="inventory_tab">Harvest inventory</string>
+    <string name="inventory_title">Harvest inventory</string>
+    <string name="inventory_count">%1$d inventory entries</string>
+    <string name="inventory_add">Register harvest</string>
+    <string name="inventory_add_subtitle">Add a harvest from one of your fields. The marketplace product is created automatically.</string>
+    <string name="inventory_search">Search by harvest or field</string>
+    <string name="inventory_all">All</string>
+    <string name="inventory_available">Available</string>
+    <string name="inventory_out_of_stock">Out of stock</string>
+    <string name="inventory_all_types">All packaging types</string>
+    <string name="inventory_empty">No harvests to show</string>
+    <string name="inventory_empty_help">Register a harvest or change the filters.</string>
+    <string name="inventory_update">Update stock</string>
+    <string name="inventory_units">%1$d units</string>
+    <string name="inventory_field_value">Field: %1$s</string>
+    <string name="inventory_total_weight">Total weight: %1$.2f kg</string>
+    <string name="inventory_unit_price">Unit price: %1$.2f</string>
+    <string name="inventory_profile_required">Load your farm profile before registering a harvest.</string>
+    <string name="inventory_field_required">No fields found for your profile. Add or refresh a field first.</string>
+    <string name="inventory_select_field">Select your field</string>
+    <string name="inventory_name">Harvest name</string>
+    <string name="inventory_type">Packaging type (e.g. Sacks)</string>
+    <string name="inventory_price">Unit sale price</string>
+    <string name="inventory_quantity">Initial quantity (units)</string>
+    <string name="inventory_weight">Average weight per unit (kg)</string>
+    <string name="inventory_image_url">Product image URL (http/https)</string>
+    <string name="inventory_invalid_form">Select your field and fill in all fields. Quantity, weight and price must be greater than zero; image URL must start with http:// or https://.</string>
+    <string name="inventory_save_error">Unable to retrieve or save inventory. Check your connection and server.</string>
+    <string name="inventory_offline">Cannot connect to the server. Check your connection.</string>
+    <string name="inventory_session_expired">Session expired. Sign in again.</string>
+    <string name="inventory_current_stock">Current stock: %1$d units</string>
+    <string name="inventory_new_quantity">New total stock (units)</string>
+    <string name="inventory_item_not_found">Inventory item not found. Go back and refresh.</string>
+    <!-- EPIC10: Notifications Management -->
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_preferences">Notification preferences</string>
+    <string name="notifications_filter_all">All</string>
+    <string name="notifications_filter_unread">Unread</string>
+    <string name="notifications_filter_alerts">Alerts</string>
+    <string name="notifications_filter_reviews">Reviews</string>
+    <string name="notifications_empty">No notifications in this category.</string>
+    <string name="notification_view_review">View review</string>
+    <string name="notification_reply">Reply</string>
+    <string name="notification_preferences_types">Alert types</string>
+    <string name="notification_pref_humidity">Low moisture alerts</string>
+    <string name="notification_pref_humidity_desc">Receive alerts when moisture drops below threshold.</string>
+    <string name="notification_pref_nutrients">Critical nutrient alerts</string>
+    <string name="notification_pref_nutrients_desc">Receive alerts for N, P, K imbalances.</string>
+    <string name="notification_pref_reviews">New review notifications</string>
+    <string name="notification_pref_reviews_desc">Notices when farmers rate your products.</string>
+    <string name="notification_pref_system">System announcements</string>
+    <string name="notification_pref_system_desc">Status updates and maintenance.</string>
+    <string name="notification_preferences_channels">Delivery channels</string>
+    <string name="notification_channel_app">In-app notifications</string>
+    <string name="notification_channel_email">Email notifications</string>
+    <string name="notification_channel_sms">SMS text messages</string>
+    <string name="notification_preferences_updated">Preferences updated</string>
 </resources>

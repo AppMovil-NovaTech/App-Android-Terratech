@@ -13,6 +13,9 @@ import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.hasScrollToIndexAction
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -27,6 +30,8 @@ import com.novatech.terratech.core.presentation.navigation.TopLevelDestination
 import com.novatech.terratech.core.presentation.ui.SignedInContent
 import com.novatech.terratech.core.presentation.ui.TerraTechNavHost
 import com.novatech.terratech.iam.domain.entity.Session
+import com.novatech.terratech.inventory.presentation.navigation.InventoryNavigationActions
+import com.novatech.terratech.inventory.presentation.state.InventoryState
 import com.novatech.terratech.monitoring.domain.entity.Field
 import com.novatech.terratech.monitoring.domain.entity.Reading
 import com.novatech.terratech.monitoring.domain.entity.Sensor
@@ -37,6 +42,13 @@ import com.novatech.terratech.monitoring.presentation.navigation.MonitoringNavig
 import com.novatech.terratech.monitoring.presentation.navigation.ReadingDestination
 import com.novatech.terratech.monitoring.presentation.navigation.SensorDestination
 import com.novatech.terratech.monitoring.presentation.state.MonitoringState
+import com.novatech.terratech.notifications.application.usecase.NotificationActions
+import com.novatech.terratech.notifications.domain.entity.NotificationItem
+import com.novatech.terratech.notifications.domain.entity.NotificationPreferences
+import com.novatech.terratech.notifications.domain.repository.NotificationPreferencesRepository
+import com.novatech.terratech.notifications.domain.repository.NotificationRepository
+import com.novatech.terratech.notifications.presentation.viewmodel.NotificationPreferencesViewModel
+import com.novatech.terratech.notifications.presentation.viewmodel.NotificationsViewModel
 import com.novatech.terratech.profile.domain.entity.FarmProfile
 import com.novatech.terratech.profile.presentation.navigation.ProfileDestination
 import com.novatech.terratech.profile.presentation.navigation.ProfileNavigationActions
@@ -72,8 +84,33 @@ class NavigationGraphTest {
                 readDetail = {},
                 refresh = {},
                 clearMessage = {},
+                loadZoneThresholds = {},
+                saveZoneThresholds = {},
+                resetZoneThresholds = {},
+                closeZoneThresholds = {},
             )
         val profileActions = ProfileNavigationActions({ _, _, _, _, _ -> }, {}, {})
+        val notificationActions = NotificationActions(
+            object : NotificationRepository {
+                override suspend fun getNotifications(userId: Int, profileId: Int): List<NotificationItem> = emptyList()
+
+                override suspend fun markAsRead(notificationId: Int): Boolean = true
+
+                override suspend fun createNotification(
+                    profileId: Int,
+                    title: String,
+                    message: String,
+                    isAlert: Boolean,
+                ): NotificationItem = error("Notification creation is outside this navigation test")
+            },
+            object : NotificationPreferencesRepository {
+                override suspend fun getPreferences(userId: Int): NotificationPreferences = NotificationPreferences(userId)
+
+                override suspend fun savePreferences(preferences: NotificationPreferences): NotificationPreferences = preferences
+            },
+        )
+        val notificationsViewModel = NotificationsViewModel(notificationActions)
+        val preferencesViewModel = NotificationPreferencesViewModel(notificationActions)
         compose.setContent {
             key(userId) {
                 val context = LocalContext.current
@@ -116,7 +153,11 @@ class NavigationGraphTest {
                             profileState = profileState,
                             monitoringState = monitoringState,
                             monitoringActions = monitoringActions,
+                            inventoryState = InventoryState(),
+                            inventoryActions = InventoryNavigationActions({}, {}, {}, { _, _ -> }),
                             profileActions = profileActions,
+                            notificationsViewModel = notificationsViewModel,
+                            preferencesViewModel = preferencesViewModel,
                         )
                     }
                 }
@@ -141,7 +182,8 @@ class NavigationGraphTest {
                 controller.currentBackStackEntry!!.toRoute<FieldSensorsDestination>().fieldId,
             )
         }
-        compose.onNodeWithText("View readings").performScrollTo().performClick()
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("View readings"))
+        compose.onNodeWithText("View readings").performClick()
         compose.runOnIdle {
             assertEquals(
                 11,

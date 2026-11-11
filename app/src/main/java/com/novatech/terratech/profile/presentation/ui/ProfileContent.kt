@@ -17,7 +17,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.toString
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,6 +34,8 @@ import com.novatech.terratech.core.presentation.component.PrimaryButton
 import com.novatech.terratech.core.presentation.format.areaNumber
 import com.novatech.terratech.iam.domain.entity.Session
 import com.novatech.terratech.profile.presentation.component.ProfileForm
+import com.novatech.terratech.profile.presentation.component.ThresholdEditDialog
+import com.novatech.terratech.profile.presentation.component.ThresholdSettingsCard
 import com.novatech.terratech.profile.presentation.state.ProfileState
 import com.novatech.terratech.ui.theme.FarmGreen
 import com.novatech.terratech.ui.theme.LeafLight
@@ -46,8 +51,12 @@ internal fun ProfileContent(
     onRefresh: () -> Unit,
     onRequestLogout: () -> Unit,
     onContinue: (() -> Unit)? = null,
+    onSaveThresholds: (Double, Double) -> Unit = { _, _ -> },
+    onNavigateToPreferences: () -> Unit = {},
 ) {
     val profile = state.profile
+    var editingThresholds by rememberSaveable { mutableStateOf(false) }
+
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp).imePadding(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -78,6 +87,7 @@ internal fun ProfileContent(
                 style = MaterialTheme.typography.headlineMedium,
             )
             Text(session.email, color = Muted)
+            Text(stringResource(R.string.registered_at, profile?.registeredAt?.take(10) ?: stringResource(R.string.date_unavailable)), color = Muted)
             profile?.location?.let { Text(it, color = Muted) }
         }
         if (editing || (profile == null && state.checked && state.error == null)) {
@@ -90,10 +100,11 @@ internal fun ProfileContent(
                 state.busy,
                 onSave,
             )
-            if (profile != null)
+            if (profile != null) {
                 TextButton(onClick = { onEditingChange(false) }) {
                     Text(stringResource(R.string.cancel))
                 }
+            }
         } else {
             FarmCard {
                 Text(
@@ -117,23 +128,63 @@ internal fun ProfileContent(
                     onEditingChange(true)
                 }
             }
+            if (profile != null) {
+                ThresholdSettingsCard(
+                    minimumMoisture = profile.minimumMoisture,
+                    temperatureThreshold = profile.temperatureThreshold,
+                    enabled = !state.busy,
+                    onConfigure = { editingThresholds = true },
+                )
+
+                FarmCard {
+                    Text(
+                        stringResource(R.string.notifications_preferences),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(
+                        stringResource(R.string.notification_pref_humidity_desc),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Muted,
+                    )
+                    PrimaryButton(
+                        stringResource(R.string.notifications_preferences),
+                        !state.busy,
+                        onNavigateToPreferences,
+                    )
+                }
+            }
         }
         if (state.saved) {
             Pill(stringResource(R.string.profile_saved))
-            if (onContinue != null)
+            if (onContinue != null) {
                 PrimaryButton(
                     stringResource(R.string.profile_continue_fields),
                     !state.busy,
                     onContinue,
                 )
+            }
         }
-        if (profile != null && !editing)
+        if (profile != null && !editing) {
             FarmCard {
                 Text(stringResource(R.string.cache), style = MaterialTheme.typography.titleMedium)
                 Text(stringResource(R.string.sync_status), color = Muted)
             }
+        }
         TextButton(onClick = onRequestLogout, modifier = Modifier.fillMaxWidth()) {
             Text(stringResource(R.string.logout), color = MaterialTheme.colorScheme.error)
         }
+    }
+
+    if (editingThresholds && profile != null) {
+        ThresholdEditDialog(
+            initialMoisture = profile.minimumMoisture,
+            initialTemperature = profile.temperatureThreshold,
+            busy = state.busy,
+            onDismiss = { editingThresholds = false },
+            onSave = { moisture, temperature ->
+                editingThresholds = false
+                onSaveThresholds(moisture, temperature)
+            },
+        )
     }
 }

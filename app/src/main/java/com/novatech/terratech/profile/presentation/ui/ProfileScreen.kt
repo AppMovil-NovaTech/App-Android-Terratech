@@ -19,19 +19,23 @@ fun ProfileScreen(
     onRefresh: () -> Unit,
     onLogout: () -> Unit,
     onContinue: (() -> Unit)? = null,
+    onSaveThresholds: (Double, Double) -> Unit = { _, _ -> },
+    onNavigateToPreferences: () -> Unit = {},
 ) {
     var editing by rememberSaveable { mutableStateOf(false) }
     var confirmLogout by remember { mutableStateOf(false) }
     LaunchedEffect(state.saved) { if (state.saved) editing = false }
     ProfileContent(
-        state,
-        session,
-        editing,
+        state = state,
+        session = session,
+        editing = editing,
         onEditingChange = { editing = it },
         onSave = onSave,
         onContinue = onContinue,
         onRefresh = onRefresh,
         onRequestLogout = { confirmLogout = true },
+        onSaveThresholds = onSaveThresholds,
+        onNavigateToPreferences = onNavigateToPreferences,
     )
     if (confirmLogout) {
         LogoutConfirmationDialog(

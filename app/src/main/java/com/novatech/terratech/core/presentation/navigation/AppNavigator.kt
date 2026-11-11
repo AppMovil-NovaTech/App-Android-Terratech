@@ -2,12 +2,17 @@ package com.novatech.terratech.core.presentation.navigation
 
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.novatech.terratech.inventory.presentation.navigation.CreateInventoryDestination
+import com.novatech.terratech.inventory.presentation.navigation.EditInventoryDestination
 import com.novatech.terratech.monitoring.presentation.navigation.CreateFieldDestination
 import com.novatech.terratech.monitoring.presentation.navigation.FieldSensorsDestination
 import com.novatech.terratech.monitoring.presentation.navigation.HistoryDestination
 import com.novatech.terratech.monitoring.presentation.navigation.ReadingDestination
 import com.novatech.terratech.monitoring.presentation.navigation.RegisterSensorDestination
 import com.novatech.terratech.monitoring.presentation.navigation.SensorDestination
+import com.novatech.terratech.monitoring.presentation.navigation.VegetationComparisonDestination
+import com.novatech.terratech.notifications.presentation.navigation.NotificationPreferencesDestination
+import com.novatech.terratech.notifications.presentation.navigation.NotificationsDestination
 
 class AppNavigator(private val controller: NavHostController) {
     fun topLevel(destination: TopLevelDestination) {
@@ -23,6 +28,14 @@ class AppNavigator(private val controller: NavHostController) {
                 restoreState = true
             }
         }
+    }
+
+    fun createInventory() {
+        controller.navigate(CreateInventoryDestination)
+    }
+
+    fun editInventory(inventoryId: Int) {
+        controller.navigate(EditInventoryDestination(inventoryId))
     }
 
     fun back() {
@@ -69,5 +82,17 @@ class AppNavigator(private val controller: NavHostController) {
             popUpTo<RegisterSensorDestination> { inclusive = true }
             launchSingleTop = true
         }
+    }
+
+    fun vegetationComparison(fieldId: Int) {
+        controller.navigate(VegetationComparisonDestination(fieldId))
+    }
+
+    fun notifications() {
+        controller.navigate(NotificationsDestination)
+    }
+
+    fun notificationPreferences() {
+        controller.navigate(NotificationPreferencesDestination)
     }
 }

@@ -2,9 +2,13 @@ package com.novatech.terratech.core.infrastructure.di
 
 import android.content.Context
 import androidx.room.Room
+import com.novatech.terratech.core.infrastructure.local.RecommendationsMigration
 import com.novatech.terratech.core.infrastructure.local.FieldBoundaryMigration
 import com.novatech.terratech.core.infrastructure.local.TerraDatabase
+import com.novatech.terratech.core.infrastructure.local.ThresholdsMigration
+import com.novatech.terratech.core.infrastructure.local.WeatherAndSatelliteMigration
 import com.novatech.terratech.iam.infrastructure.local.SessionStore
+import com.novatech.terratech.notifications.infrastructure.local.NotificationPreferencesStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,10 +27,15 @@ object PersistenceModule {
     @Singleton
     fun database(@ApplicationContext context: Context) =
         Room.databaseBuilder(context, TerraDatabase::class.java, "terratech.db")
-            .addMigrations(FieldBoundaryMigration)
+            .addMigrations(FieldBoundaryMigration, ThresholdsMigration, WeatherAndSatelliteMigration, RecommendationsMigration)
             .build()
 
     @Provides @Singleton fun store(@ApplicationContext context: Context) = SessionStore(context)
+
+    @Provides
+    @Singleton
+    fun notificationPreferencesStore(@ApplicationContext context: Context) =
+        NotificationPreferencesStore(context)
 
     @Provides @Singleton fun scope() = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 }

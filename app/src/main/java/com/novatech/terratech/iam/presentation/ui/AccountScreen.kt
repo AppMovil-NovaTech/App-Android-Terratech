@@ -15,7 +15,10 @@ fun AccountScreen(
     onLogin: (String, String) -> Unit,
     onRegister: (String, String, String, String) -> Unit,
     onClear: () -> Unit,
+    onLogout: (() -> Unit)? = null,
     reauth: Boolean = false,
+    onRequestVerification: (String) -> Unit = {},
+    onRequestPasswordReset: (String) -> Unit = {},
 ) {
     var registering by rememberSaveable { mutableStateOf(false) }
     var name by rememberSaveable { mutableStateOf("") }
@@ -26,15 +29,22 @@ fun AccountScreen(
     LaunchedEffect(state.error) {
         if (state.error == "ACCOUNT_CREATED_LOGIN_REQUIRED") registering = false
     }
+    LaunchedEffect(state.registered) {
+        if (state.registered) {
+            registering = false
+            password = ""
+            confirmation = ""
+        }
+    }
     AccountContent(
-        state,
-        registering,
-        name,
-        email,
-        password,
-        confirmation,
-        visible,
-        reauth,
+        state = state,
+        registering = registering,
+        name = name,
+        email = email,
+        password = password,
+        confirmation = confirmation,
+        visible = visible,
+        reauth = reauth,
         onNameChange = {
             name = it
             onClear()
@@ -60,5 +70,8 @@ fun AccountScreen(
         },
         onLogin = onLogin,
         onRegister = onRegister,
+        onLogout = onLogout,
+        onRequestVerification = { onRequestVerification(email) },
+        onRequestPasswordReset = { onRequestPasswordReset(email) },
     )
 }

@@ -13,4 +13,6 @@ data class ProfileRow(
     val location: String,
     val sizeM2: Double?,
     val minimumMoisture: Double,
+    val temperatureThreshold: Double = 35.0,
+    val registeredAt: String? = null,
 )
