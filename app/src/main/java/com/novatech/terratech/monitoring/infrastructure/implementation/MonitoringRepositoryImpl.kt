@@ -13,6 +13,7 @@ import com.novatech.terratech.monitoring.domain.service.RecommendationEngine
 import com.novatech.terratech.monitoring.domain.repository.MonitoringRepository
 import com.novatech.terratech.monitoring.domain.valueobject.Coordinates
 import com.novatech.terratech.monitoring.infrastructure.local.entity.DownloadRow
+import com.novatech.terratech.monitoring.infrastructure.mapper.WebhookRecommendationMapper
 import com.novatech.terratech.monitoring.infrastructure.mapper.domain
 import com.novatech.terratech.monitoring.infrastructure.mapper.row
 import com.novatech.terratech.monitoring.infrastructure.remote.MonitoringApi
@@ -206,9 +207,9 @@ class MonitoringRepositoryImpl(
         device: Int,
         days: Int
     ) {
-        val latest =
+        val latestDto =
             try {
-                apiCall { api.latest(device) }.reading
+                apiCall { api.latest(device) }
             } catch (exception: Failure) {
                 if (
                     exception.code == "NO_READINGS" &&
@@ -216,11 +217,14 @@ class MonitoringRepositoryImpl(
                 ) null
                 else throw exception
             }
+        val latest = latestDto?.reading
         val history = apiCall { api.history(device, days) }
         val rows =
             (history.readings + listOfNotNull(latest)).distinctBy { it.id }.map { it.row(user) }
 
-        val fieldId = dao.sensors(user).firstOrNull()?.find { it.id == device }?.fieldId
+        val fieldId =
+            dao.sensors(user).firstOrNull()?.find { it.id == device }?.fieldId
+                ?: latestDto?.fieldId
         val fieldName = fieldId?.let { fid -> dao.fields(user).firstOrNull()?.find { it.id == fid }?.name } ?: "Zona"
         val minMoisture = dao.download(user, device, days).firstOrNull()?.minimumMoisture ?: 30.0
 
@@ -233,9 +237,33 @@ class MonitoringRepositoryImpl(
             ).map { it.row(user) }
         }
 
+        val currentReadingId = rows.maxByOrNull { it.recordedAt }?.id
+        val webhookRows =
+            if (currentReadingId != null) {
+                val remoteWebhooks =
+                    try {
+                        apiCall { api.webhookRecommendations(fieldId = fieldId, deviceId = null) }
+                    } catch (_: Exception) {
+                        emptyList()
+                    }
+                remoteWebhooks
+                    .filter { it.deviceId == null || it.deviceId == device }
+                    .take(1)
+                    .map { dto ->
+                        WebhookRecommendationMapper.toRow(
+                            dto = dto,
+                            userId = user,
+                            deviceId = device,
+                            readingId = currentReadingId,
+                        )
+                    }
+            } else {
+                emptyList()
+            }
+
         db.withTransaction {
             dao.putReadings(rows)
-            dao.putRecommendations(recommendations)
+            dao.putRecommendations(recommendations + webhookRows)
             dao.putDownload(
                 DownloadRow(
                     user,

@@ -23,10 +23,10 @@ fun RecommendationRow.domain(): Recommendation =
     Recommendation(
         deviceId = deviceId,
         readingId = readingId,
-        type = RecommendationType.valueOf(type),
-        severity = RecommendationSeverity.valueOf(severity),
+        type = runCatching { RecommendationType.valueOf(type) }.getOrDefault(RecommendationType.WEBHOOK),
+        severity = runCatching { RecommendationSeverity.valueOf(severity) }.getOrDefault(RecommendationSeverity.INFO),
         title = title,
         message = message,
         actionSuggested = actionSuggested,
-        createdAt = Instant.parse(createdAt)
+        createdAt = runCatching { Instant.parse(createdAt) }.getOrElse { Instant.EPOCH }
     )
