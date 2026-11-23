@@ -7,4 +7,12 @@ data class Sensor(
     val sensorCode: String?,
     val macAddress: String,
     val status: String,
-)
+    val batteryLevelPercent: Int? = null,
+) {
+    fun resolvedBatteryPercent(): Int? =
+        batteryLevelPercent ?: when (status) {
+            "LOW_BATTERY" -> 15
+            "ONLINE" -> 90
+            else -> null
+        }
+}

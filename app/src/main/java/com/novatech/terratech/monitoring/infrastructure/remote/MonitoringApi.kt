@@ -13,6 +13,7 @@ import com.novatech.terratech.monitoring.infrastructure.remote.dto.ReadingDto
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.RegisterSensorDto
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.SatelliteImageDto
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.SensorDto
+import com.novatech.terratech.monitoring.infrastructure.remote.dto.WebhookRecommendationDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -105,4 +106,10 @@ interface MonitoringApi {
         @Path("fieldId") fieldId: Int,
         @Query("targetDate") targetDate: String,
     ): Response<SatelliteImageDto>
+
+    @GET("api/v1/recommendations/webhooks")
+    suspend fun webhookRecommendations(
+        @Query("fieldId") fieldId: Int? = null,
+        @Query("deviceId") deviceId: Int? = null,
+    ): List<WebhookRecommendationDto>
 }
