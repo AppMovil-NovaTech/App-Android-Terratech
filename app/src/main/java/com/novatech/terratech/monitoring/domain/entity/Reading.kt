@@ -13,6 +13,10 @@ data class Reading(
     val phosphorusPpm: Double,
     val potassiumPpm: Double,
     val source: String,
+    val fieldId: Int? = null,
+    val sensorCode: String? = null,
+    val batteryLevelPercent: Int? = null,
+    val elapsedMinutes: Int? = null,
 ) {
     fun isStale(now: Instant) = Duration.between(recordedAt, now) > Duration.ofMinutes(30)
 

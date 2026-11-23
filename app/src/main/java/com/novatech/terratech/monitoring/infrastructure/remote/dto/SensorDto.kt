@@ -7,4 +7,5 @@ data class SensorDto(
     val sensorCode: String?,
     val macAddress: String,
     val status: String,
+    val batteryLevelPercent: Int? = null,
 )

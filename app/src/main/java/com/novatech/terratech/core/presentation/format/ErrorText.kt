@@ -31,8 +31,9 @@ fun errorText(code: String): String =
             "UNAUTHENTICATED" -> R.string.session_expired
             "OFFLINE" -> R.string.offline
             "FIELD_NOT_FOUND",
-            "DEVICE_NOT_FOUND",
-            "READING_NOT_FOUND" -> R.string.error_missing
+            "READING_NOT_FOUND",
+            "RESOURCE_NOT_FOUND" -> R.string.error_missing
+            "DEVICE_NOT_FOUND" -> R.string.error_sensor_not_found
             else -> R.string.error_generic
         }
     )

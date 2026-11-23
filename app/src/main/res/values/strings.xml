@@ -49,6 +49,10 @@
     <string name="potassium">Potassium</string>
     <string name="simulated">SIMULATED · demonstration data</string>
     <string name="old_data">Reading older than 30 minutes</string>
+    <string name="old_data_elapsed">Reading older than 30 minutes (%1$s ago)</string>
+    <string name="battery_level">Battery: %1$d%%</string>
+    <string name="sensor_field_meta">Sensor %1$s · Field #%2$d</string>
+    <string name="error_sensor_not_found">Sensor was not found or belongs to another account</string>
     <string name="updated">Measured: %1$s</string>
     <string name="downloaded">Downloaded: %1$s</string>
     <string name="offline">Offline · showing saved data</string>

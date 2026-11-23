@@ -17,6 +17,7 @@ import com.novatech.terratech.core.presentation.component.FarmCard
 import com.novatech.terratech.core.presentation.component.Pill
 import com.novatech.terratech.core.presentation.format.timestamp
 import com.novatech.terratech.monitoring.domain.entity.Reading
+import com.novatech.terratech.monitoring.presentation.format.ElapsedTimeFormatter
 import com.novatech.terratech.monitoring.presentation.state.MonitoringState
 import com.novatech.terratech.ui.theme.Muted
 
@@ -53,13 +54,36 @@ internal fun ReadingSummary(reading: Reading, state: MonitoringState) {
                 }
             }
         }
+        val sensorCode =
+            reading.sensorCode
+                ?: state.selectedSensor?.sensorCode
+                ?: state.selectedSensor?.name
+        val resolvedFieldId =
+            reading.fieldId
+                ?: state.selectedSensor?.fieldId
+                ?: state.fieldId
+        if (!sensorCode.isNullOrBlank() && resolvedFieldId != null) {
+            Pill(stringResource(R.string.sensor_field_meta, sensorCode, resolvedFieldId))
+        }
+        val battery = reading.batteryLevelPercent ?: state.selectedSensor?.resolvedBatteryPercent()
+        if (battery != null) {
+            Pill(stringResource(R.string.battery_level, battery), battery <= 20)
+        }
         Pill(reading.source)
         Text(
             stringResource(R.string.updated, timestamp(reading.recordedAt)),
             color = Muted,
             style = MaterialTheme.typography.bodyMedium,
         )
-        if (reading.isStale(state.now)) Pill(stringResource(R.string.old_data), true)
+        if (reading.isStale(state.now)) {
+            val elapsed =
+                reading.elapsedMinutes
+                    ?: ElapsedTimeFormatter.elapsedMinutes(reading.recordedAt, state.now)
+            Pill(
+                stringResource(R.string.old_data_elapsed, ElapsedTimeFormatter.format(elapsed)),
+                true,
+            )
+        }
         state.download?.downloadedAt?.let {
             Text(
                 stringResource(R.string.downloaded, timestamp(it)),

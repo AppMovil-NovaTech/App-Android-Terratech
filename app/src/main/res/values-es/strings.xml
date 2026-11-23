@@ -49,6 +49,10 @@
     <string name="potassium">Potasio</string>
     <string name="simulated">SIMULATED · datos de demostración</string>
     <string name="old_data">Lectura de más de 30 minutos</string>
+    <string name="old_data_elapsed">Lectura desactualizada (hace %1$s)</string>
+    <string name="battery_level">Batería: %1$d%%</string>
+    <string name="sensor_field_meta">Sensor %1$s · Parcela #%2$d</string>
+    <string name="error_sensor_not_found">El sensor no existe o pertenece a otra cuenta</string>
     <string name="updated">Medición: %1$s</string>
     <string name="downloaded">Descarga: %1$s</string>
     <string name="offline">Sin conexión · mostrando datos guardados</string>
