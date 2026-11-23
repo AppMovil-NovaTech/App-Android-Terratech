@@ -17,5 +17,6 @@ fun NavGraphBuilder.inventoryGraph(
         inventoryDestination(navigator, state, actions, fields)
         createInventoryDestination(navigator, state, actions, profileId, fields)
         editInventoryDestination(navigator, state, actions)
+        productReviewsDestination()
     }
 }
