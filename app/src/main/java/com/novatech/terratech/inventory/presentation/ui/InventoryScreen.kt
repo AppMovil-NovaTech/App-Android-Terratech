@@ -36,6 +36,7 @@ fun InventoryScreen(
     fields: List<Field>,
     onCreate: () -> Unit,
     onEdit: (Int) -> Unit,
+    onReviews: (Int, String) -> Unit,
     onRefresh: () -> Unit,
 ) {
     var search by rememberSaveable { mutableStateOf("") }
@@ -118,7 +119,13 @@ fun InventoryScreen(
             item { EmptyCard(stringResource(R.string.inventory_empty), stringResource(R.string.inventory_empty_help)) }
         }
         items(filtered, key = { it.id }) { item ->
-            InventoryItemCard(item, fieldsById[item.fieldId]?.name, state.busy, onEdit)
+            InventoryItemCard(
+                item = item,
+                fieldName = fieldsById[item.fieldId]?.name,
+                busy = state.busy,
+                onEdit = onEdit,
+                onReviews = { onReviews(item.productId, item.name) },
+            )
         }
     }
 }

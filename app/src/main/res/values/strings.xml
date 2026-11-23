@@ -277,9 +277,37 @@
     <string name="inventory_save_error">Unable to retrieve or save inventory. Check your connection and server.</string>
     <string name="inventory_offline">Cannot connect to the server. Check your connection.</string>
     <string name="inventory_session_expired">Session expired. Sign in again.</string>
+    <string name="inventory_invalid_input">Check the entered data.</string>
+    <string name="inventory_resource_not_found">The selected field or profile is not available.</string>
     <string name="inventory_current_stock">Current stock: %1$d units</string>
     <string name="inventory_new_quantity">New total stock (units)</string>
     <string name="inventory_item_not_found">Inventory item not found. Go back and refresh.</string>
+    <!-- EPIC12: Product reviews -->
+    <string name="reviews_action">Reviews &amp; ratings</string>
+    <string name="reviews_title">Reviews &amp; ratings</string>
+    <string name="reviews_subtitle">Comments and ratings for this product</string>
+    <string name="reviews_average_value">%1$.1f</string>
+    <string name="reviews_no_ratings">No ratings yet</string>
+    <string name="reviews_no_ratings_help">This product does not have comments or ratings yet.</string>
+    <string name="reviews_no_comments">No comments yet</string>
+    <string name="reviews_no_comments_help">There are no comments for this product.</string>
+    <string name="reviews_filtered_empty">No %1$d-star comments</string>
+    <string name="reviews_filtered_empty_help">Try a different star filter.</string>
+    <string name="reviews_filter_all">All</string>
+    <string name="reviews_breakdown_title">Rating breakdown</string>
+    <string name="reviews_error_offline">Cannot load reviews. Check your connection.</string>
+    <string name="reviews_error_not_found">This product is no longer available.</string>
+    <string name="reviews_error_session">Session expired. Sign in again.</string>
+    <string name="reviews_error_generic">Unable to load reviews. Try again.</string>
+    <string name="reviews_retry">Try again</string>
+    <plurals name="reviews_total">
+        <item quantity="one">%1$d rating</item>
+        <item quantity="other">%1$d ratings</item>
+    </plurals>
+    <plurals name="reviews_star_count">
+        <item quantity="one">%1$d star</item>
+        <item quantity="other">%1$d stars</item>
+    </plurals>
     <!-- EPIC10: Notifications Management -->
     <string name="notifications_title">Notifications</string>
     <string name="notifications_preferences">Notification preferences</string>

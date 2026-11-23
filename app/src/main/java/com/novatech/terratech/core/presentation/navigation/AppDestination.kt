@@ -5,6 +5,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import com.novatech.terratech.inventory.presentation.navigation.CreateInventoryDestination
 import com.novatech.terratech.inventory.presentation.navigation.EditInventoryDestination
 import com.novatech.terratech.inventory.presentation.navigation.InventoryDestination
+import com.novatech.terratech.inventory.presentation.navigation.ProductReviewsDestination
 import com.novatech.terratech.monitoring.presentation.navigation.CreateFieldDestination
 import com.novatech.terratech.monitoring.presentation.navigation.FieldSensorsDestination
 import com.novatech.terratech.monitoring.presentation.navigation.FieldsDestination
@@ -28,6 +29,7 @@ enum class AppDestination {
     INVENTORY,
     CREATE_INVENTORY,
     EDIT_INVENTORY,
+    PRODUCT_REVIEWS,
     NOTIFICATIONS,
     NOTIFICATION_PREFERENCES,
     PROFILE;
@@ -36,13 +38,13 @@ enum class AppDestination {
         get() = this in setOf(HOME, FIELDS, INVENTORY, PROFILE)
 
     val showBottomBar: Boolean
-        get() = this !in setOf(CREATE_FIELD, REGISTER_SENSOR, CREATE_INVENTORY, EDIT_INVENTORY)
+        get() = this !in setOf(CREATE_FIELD, REGISTER_SENSOR, CREATE_INVENTORY, EDIT_INVENTORY, PRODUCT_REVIEWS)
 
     val showToolbar: Boolean
         get() = this !in setOf(CREATE_FIELD, CREATE_INVENTORY, EDIT_INVENTORY)
 
     val canRefresh: Boolean
-        get() = this !in setOf(PROFILE, CREATE_FIELD, REGISTER_SENSOR, CREATE_INVENTORY, EDIT_INVENTORY, NOTIFICATION_PREFERENCES)
+        get() = this !in setOf(PROFILE, CREATE_FIELD, REGISTER_SENSOR, CREATE_INVENTORY, EDIT_INVENTORY, PRODUCT_REVIEWS, NOTIFICATION_PREFERENCES)
 
     companion object {
         fun from(destination: NavDestination?): AppDestination =
@@ -57,6 +59,7 @@ enum class AppDestination {
                 destination?.hasRoute<InventoryDestination>() == true -> INVENTORY
                 destination?.hasRoute<CreateInventoryDestination>() == true -> CREATE_INVENTORY
                 destination?.hasRoute<EditInventoryDestination>() == true -> EDIT_INVENTORY
+                destination?.hasRoute<ProductReviewsDestination>() == true -> PRODUCT_REVIEWS
                 destination?.hasRoute<NotificationsDestination>() == true -> NOTIFICATIONS
                 destination?.hasRoute<NotificationPreferencesDestination>() == true -> NOTIFICATION_PREFERENCES
                 destination?.hasRoute<ProfileDestination>() == true -> PROFILE

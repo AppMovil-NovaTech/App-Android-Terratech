@@ -277,9 +277,37 @@
     <string name="inventory_save_error">No se pudo consultar o guardar el inventario. Revisa la conexión y el servidor.</string>
     <string name="inventory_offline">No hay conexión con el servidor. Revisa tu conexión.</string>
     <string name="inventory_session_expired">La sesión venció. Inicia sesión nuevamente.</string>
+    <string name="inventory_invalid_input">Revisa los datos ingresados.</string>
+    <string name="inventory_resource_not_found">El campo o perfil seleccionado no está disponible.</string>
     <string name="inventory_current_stock">Stock actual: %1$d unidades</string>
     <string name="inventory_new_quantity">Nuevo stock total (unidades)</string>
     <string name="inventory_item_not_found">No se encontró el registro. Regresa y actualiza.</string>
+    <!-- EPIC12: Product reviews -->
+    <string name="reviews_action">Reseñas y calificaciones</string>
+    <string name="reviews_title">Reseñas y calificaciones</string>
+    <string name="reviews_subtitle">Comentarios y calificaciones de este producto</string>
+    <string name="reviews_average_value">%1$.1f</string>
+    <string name="reviews_no_ratings">Aún no hay calificaciones</string>
+    <string name="reviews_no_ratings_help">Este producto todavía no tiene comentarios ni calificaciones.</string>
+    <string name="reviews_no_comments">Aún no hay comentarios</string>
+    <string name="reviews_no_comments_help">No hay comentarios para este producto.</string>
+    <string name="reviews_filtered_empty">No hay comentarios de %1$d estrellas</string>
+    <string name="reviews_filtered_empty_help">Prueba con otro filtro de estrellas.</string>
+    <string name="reviews_filter_all">Todas</string>
+    <string name="reviews_breakdown_title">Distribución de calificaciones</string>
+    <string name="reviews_error_offline">No se pudieron cargar las reseñas. Revisa tu conexión.</string>
+    <string name="reviews_error_not_found">Este producto ya no está disponible.</string>
+    <string name="reviews_error_session">La sesión venció. Inicia sesión nuevamente.</string>
+    <string name="reviews_error_generic">No se pudieron cargar las reseñas. Reintenta.</string>
+    <string name="reviews_retry">Reintentar</string>
+    <plurals name="reviews_total">
+        <item quantity="one">%1$d calificación</item>
+        <item quantity="other">%1$d calificaciones</item>
+    </plurals>
+    <plurals name="reviews_star_count">
+        <item quantity="one">%1$d estrella</item>
+        <item quantity="other">%1$d estrellas</item>
+    </plurals>
     <!-- EPIC10: Notifications Management -->
     <string name="notifications_title">Notificaciones</string>
     <string name="notifications_preferences">Configuración de notificaciones</string>

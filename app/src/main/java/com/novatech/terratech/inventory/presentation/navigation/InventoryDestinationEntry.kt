@@ -21,6 +21,7 @@ fun NavGraphBuilder.inventoryDestination(
             fields = fields,
             onCreate = navigator::createInventory,
             onEdit = navigator::editInventory,
+            onReviews = navigator::productReviews,
             onRefresh = actions.refresh,
         )
     }

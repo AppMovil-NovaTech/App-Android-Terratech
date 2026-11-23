@@ -59,8 +59,7 @@ fun CreateInventoryScreen(
             parsedQuantity != null && parsedQuantity > 0 &&
             parsedWeight != null && parsedWeight.isFinite() && parsedWeight > 0.0 &&
             parsedPrice != null && parsedPrice.isFinite() && parsedPrice > 0.0 &&
-            (imageUrl.startsWith("https://", ignoreCase = true) ||
-                imageUrl.startsWith("http://", ignoreCase = true))
+            imageUrl.isNotBlank()
 
     LazyColumn(
         Modifier.fillMaxSize(),

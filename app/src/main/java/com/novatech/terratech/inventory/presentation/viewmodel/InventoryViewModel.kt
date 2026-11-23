@@ -46,7 +46,13 @@ class InventoryViewModel @Inject constructor(private val actions: InventoryActio
     fun register(draft: InventoryDraft) {
         launch {
             val result = actions.register(draft)
-            mutable.update { it.copy(items = it.items + result, saved = true) }
+            val snapshot = runCatching { actions.load() }.getOrNull()
+            mutable.update {
+                it.copy(
+                    items = snapshot?.items ?: (it.items + result),
+                    saved = true,
+                )
+            }
         }
     }
 
@@ -69,7 +75,11 @@ class InventoryViewModel @Inject constructor(private val actions: InventoryActio
             } catch (exception: CancellationException) {
                 throw exception
             } catch (exception: Exception) {
-                val code = (exception as? Failure)?.code ?: "INVENTORY_ERROR"
+                val code =
+                    when (exception) {
+                        is IllegalArgumentException -> "INVALID_INPUT"
+                        else -> (exception as? Failure)?.code ?: "INVENTORY_ERROR"
+                    }
                 if (currentUserId == requestUserId) mutable.update { it.copy(error = code) }
             } finally {
                 if (currentUserId == requestUserId) mutable.update { it.copy(busy = false) }

@@ -28,6 +28,7 @@ fun AppToolbar(
             AppDestination.INVENTORY,
             AppDestination.CREATE_INVENTORY,
             AppDestination.EDIT_INVENTORY -> stringResource(R.string.inventory_title)
+            AppDestination.PRODUCT_REVIEWS -> stringResource(R.string.reviews_title)
             AppDestination.NOTIFICATIONS -> stringResource(R.string.notifications_title)
             AppDestination.NOTIFICATION_PREFERENCES -> stringResource(R.string.notifications_preferences)
             else -> profileState.profile?.fundoName ?: "TerraTech"
