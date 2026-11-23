@@ -27,7 +27,13 @@ import com.novatech.terratech.core.presentation.component.PageTitle
 import com.novatech.terratech.core.presentation.component.Pill
 import com.novatech.terratech.core.presentation.format.number
 import com.novatech.terratech.core.presentation.format.timestamp
-import com.novatech.terratech.monitoring.presentation.component.MoistureChart
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.novatech.terratech.monitoring.presentation.component.IndicatorHistoryChart
+import com.novatech.terratech.monitoring.presentation.component.ReadingMetrics
+import com.novatech.terratech.monitoring.presentation.component.ReadingMetrics
 import com.novatech.terratech.monitoring.presentation.state.MonitoringState
 import com.novatech.terratech.ui.theme.FarmGreen
 import com.novatech.terratech.ui.theme.Muted
@@ -39,11 +45,28 @@ fun HistoryScreen(
     onDetail: (Int) -> Unit,
     onRefresh: () -> Unit,
 ) {
+    var selectedIndicator by remember { mutableStateOf("moisture") }
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item { PageTitle(stringResource(R.string.history), state.selectedSensor?.name) }
+        state.latest?.let { latest ->
+            item {
+                FarmCard {
+                    Text(
+                        stringResource(R.string.latest_reading),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(timestamp(latest.recordedAt))
+                    Pill(latest.source)
+                    Text(
+                        stringResource(R.string.moisture) + ": " + number(latest.moisturePercent) + " %",
+                    )
+                    ReadingMetrics(latest)
+                }
+            }
+        }
         item {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 for (days in listOf(7, 30)) FilterChip(
@@ -53,6 +76,29 @@ fun HistoryScreen(
                         Text(stringResource(if (days == 7) R.string.days_7 else R.string.days_30))
                     },
                 )
+            }
+        }
+        item {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                for (indicator in listOf("moisture", "temperature", "nitrogen", "phosphorus", "potassium")) {
+                    FilterChip(
+                        selected = selectedIndicator == indicator,
+                        onClick = { selectedIndicator = indicator },
+                        label = {
+                            Text(
+                                stringResource(
+                                    when (indicator) {
+                                        "temperature" -> R.string.temperature
+                                        "nitrogen" -> R.string.nitrogen
+                                        "phosphorus" -> R.string.phosphorus
+                                        "potassium" -> R.string.potassium
+                                        else -> R.string.moisture
+                                    }
+                                )
+                            )
+                        },
+                    )
+                }
             }
         }
         item {
@@ -73,7 +119,11 @@ fun HistoryScreen(
                     }
                 }
                 Pill(stringResource(R.string.reading_count, state.history.size))
-                MoistureChart(state.history, state.download?.minimumMoisture)
+                IndicatorHistoryChart(
+                    rows = state.history,
+                    selectedIndicator = selectedIndicator,
+                    minimumMoisture = if (selectedIndicator == "moisture") state.download?.minimumMoisture else null,
+                )
                 if (state.download == null) {
                     Text(stringResource(R.string.not_downloaded))
                     OutlinedButton(onClick = onRefresh) {

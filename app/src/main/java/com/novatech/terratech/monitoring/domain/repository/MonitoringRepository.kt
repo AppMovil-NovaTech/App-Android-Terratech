@@ -63,8 +63,9 @@ interface MonitoringRepository {
     suspend fun registerSensor(
         user: Int,
         field: Int,
-        code: String,
-        name: String
+        macAddress: String,
+        name: String,
+        status: String
     ): Sensor
 
     suspend fun refreshReadings(user: Int, device: Int, days: Int)

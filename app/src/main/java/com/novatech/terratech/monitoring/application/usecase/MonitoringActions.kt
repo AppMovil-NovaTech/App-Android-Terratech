@@ -10,7 +10,7 @@ import com.novatech.terratech.monitoring.domain.repository.MonitoringRepository
 import com.novatech.terratech.monitoring.domain.valueobject.Coordinates
 import com.novatech.terratech.monitoring.domain.valueobject.FieldDraft
 import com.novatech.terratech.monitoring.domain.valueobject.FieldName
-import com.novatech.terratech.monitoring.domain.valueobject.SensorCode
+import com.novatech.terratech.monitoring.domain.valueobject.MacAddress
 
 class MonitoringActions(private val repository: MonitoringRepository) {
 
@@ -108,16 +108,19 @@ class MonitoringActions(private val repository: MonitoringRepository) {
     suspend fun registerSensor(
         user: Int,
         field: Int,
-        code: String,
-        name: String
+        macAddress: String,
+        name: String,
+        status: String
     ): Sensor {
+        val deviceMac = MacAddress.of(macAddress).value
         val sensorName = FieldName.of(name)
 
         return repository.registerSensor(
             user,
             field,
-            SensorCode.of(code).value,
-            sensorName.value
+            deviceMac,
+            sensorName.value,
+            status
         )
     }
 

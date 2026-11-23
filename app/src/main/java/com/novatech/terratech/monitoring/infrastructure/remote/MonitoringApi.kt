@@ -1,6 +1,7 @@
 
 package com.novatech.terratech.monitoring.infrastructure.remote
 
+import com.novatech.terratech.monitoring.infrastructure.remote.dto.CreateDeviceDto
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.CreateFieldDto
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.FieldDto
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.FertilityZoneDto
@@ -72,6 +73,11 @@ interface MonitoringApi {
     @POST("api/v1/devices/register")
     suspend fun registerSensor(
         @Body body: RegisterSensorDto
+    ): SensorDto
+
+    @POST("api/v1/devices")
+    suspend fun createDevice(
+        @Body body: CreateDeviceDto
     ): SensorDto
 
     @GET("api/v1/devices/{id}/readings/latest")

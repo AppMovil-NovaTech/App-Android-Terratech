@@ -753,8 +753,9 @@ constructor(
     }
 
     fun registerSensor(
-        code: String,
-        name: String
+        macAddress: String,
+        name: String,
+        status: String
     ) = request { user ->
 
         val field =
@@ -764,8 +765,9 @@ constructor(
         val sensor = actions.registerSensor(
             user,
             field,
-            code,
-            name
+            macAddress,
+            name,
+            status
         )
 
         mutable.update {
