@@ -261,8 +261,9 @@ class FakeMonitoringRepository : MonitoringRepository {
     override suspend fun registerSensor(
         user: Int,
         field: Int,
-        code: String,
-        name: String
+        macAddress: String,
+        name: String,
+        status: String
     ): Sensor {
         connected()
 
@@ -276,9 +277,9 @@ class FakeMonitoringRepository : MonitoringRepository {
             12,
             field,
             name,
-            code,
-            "02:00:00:00:00:02",
-            "OFFLINE"
+            null,
+            macAddress,
+            status
         )
 
         devices.value = devices.value + created

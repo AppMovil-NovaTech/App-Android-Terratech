@@ -115,7 +115,7 @@ class MonitoringStateTest {
                 val repo = FakeMonitoringRepository()
                 val vm = vm(repo, FakeAccountRepository())
                 runCurrent()
-                vm.registerSensor("INVALID", "North")
+                vm.registerSensor("INVALID", "North", "ONLINE")
                 runCurrent()
                 assertEquals("INVALID_SENSOR_CODE", vm.state.value.error)
                 assertEquals(0, repo.registerCalls)
@@ -131,7 +131,7 @@ class MonitoringStateTest {
                 val repo = FakeMonitoringRepository().apply { occupied = true }
                 val vm = vm(repo, FakeAccountRepository())
                 runCurrent()
-                vm.registerSensor("TT-ZZZ002", "Other")
+                vm.registerSensor("00:00:00:00:00:02", "Other", "ONLINE")
                 runCurrent()
                 assertEquals("SENSOR_OCCUPIED", vm.state.value.error)
                 assertEquals(11, vm.state.value.deviceId)

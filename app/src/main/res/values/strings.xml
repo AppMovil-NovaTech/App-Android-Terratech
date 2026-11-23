@@ -37,7 +37,7 @@
     <string name="no_fields_body">Complete your profile and create your first field.</string>
     <string name="no_sensors">No sensors in this field yet</string>
     <string name="associate">Register sensor</string>
-    <string name="sensor_code">Sensor code · TT-XXXXXX</string>
+    <string name="sensor_code">Device MAC address</string>
     <string name="sensor_name">Sensor name</string>
     <string name="sensor">Sensor</string>
     <string name="sensor_detail">Sensor detail</string>
@@ -94,7 +94,7 @@
     <string name="error_confirmation">Passwords must match exactly.</string>
     <string name="error_duplicate">This email already has an account.</string>
     <string name="error_credentials">Incorrect email or password.</string>
-    <string name="error_sensor">Use a valid, provisioned TT-XXXXXX sensor code.</string>
+    <string name="error_sensor">Use a valid device MAC address.</string>
     <string name="error_occupied">This sensor is already registered.</string>
     <string name="error_area">Enter a positive area.</string>
     <string name="error_coords">Enter valid latitude and longitude.</string>
@@ -104,7 +104,8 @@
     <string name="active_field">Selected field</string>
     <string name="plot_count">Fields: %1$d</string>
     <string name="sensor_count">Sensors: %1$d</string>
-    <string name="chart_description">Moisture trend. Exact readings are listed below.</string>
+    <string name="chart_description">Indicator trend. Exact readings are listed below.</string>
+    <string name="latest_reading">Latest reading</string>
     <string name="sync_status">Data saved locally</string>
     <string name="reading_time">Date and time</string>
     <string name="source">Source</string>
@@ -162,7 +163,7 @@
     <string name="profile_continue_fields">Create field</string>
     <string name="view_field">Open field</string>
     <string name="field_sensor_empty_help">Connect a sensor to see readings for this field.</string>
-    <string name="sensor_code_help">Code on your device, for example TT-ABC123.</string>
+    <string name="sensor_code_help">MAC address of the device, for example 00:11:22:33:44:55.</string>
     <string name="sensor_name_help">Choose a name to identify it, for example North sensor.</string>
     <string name="sensor_registration_help">This sensor will belong to %1$s.</string>
     <string name="field_created">Field created</string>

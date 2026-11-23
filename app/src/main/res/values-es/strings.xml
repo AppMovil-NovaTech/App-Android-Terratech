@@ -37,7 +37,7 @@
     <string name="no_fields_body">Completa tu perfil y crea tu primera parcela.</string>
     <string name="no_sensors">Esta parcela aún no tiene sensores</string>
     <string name="associate">Registrar sensor</string>
-    <string name="sensor_code">Código de sensor · TT-XXXXXX</string>
+    <string name="sensor_code">Dirección MAC del dispositivo</string>
     <string name="sensor_name">Nombre del sensor</string>
     <string name="sensor">Sensor</string>
     <string name="sensor_detail">Detalle del sensor</string>
@@ -94,7 +94,7 @@
     <string name="error_confirmation">Las contraseñas deben coincidir exactamente.</string>
     <string name="error_duplicate">Este correo ya tiene una cuenta.</string>
     <string name="error_credentials">Correo o contraseña incorrectos.</string>
-    <string name="error_sensor">Usa un código TT-XXXXXX válido y provisionado.</string>
+    <string name="error_sensor">Usa una dirección MAC de dispositivo válida.</string>
     <string name="error_occupied">Este sensor ya está asociado.</string>
     <string name="error_area">Ingresa una superficie positiva.</string>
     <string name="error_coords">Ingresa latitud y longitud válidas.</string>
@@ -104,7 +104,8 @@
     <string name="active_field">Parcela seleccionada</string>
     <string name="plot_count">Parcelas: %1$d</string>
     <string name="sensor_count">Sensores: %1$d</string>
-    <string name="chart_description">Tendencia de humedad. Las lecturas exactas aparecen debajo.</string>
+    <string name="chart_description">Tendencia del indicador. Las lecturas exactas aparecen debajo.</string>
+    <string name="latest_reading">Última lectura</string>
     <string name="sync_status">Datos guardados localmente</string>
     <string name="reading_time">Fecha y hora</string>
     <string name="source">Origen</string>
@@ -162,7 +163,7 @@
     <string name="profile_continue_fields">Crear parcela</string>
     <string name="view_field">Abrir parcela</string>
     <string name="field_sensor_empty_help">Conecta un sensor para consultar las mediciones de esta parcela.</string>
-    <string name="sensor_code_help">Código de tu dispositivo, por ejemplo TT-ABC123.</string>
+    <string name="sensor_code_help">Dirección MAC del dispositivo, por ejemplo 00:11:22:33:44:55.</string>
     <string name="sensor_name_help">Ponle un nombre para reconocerlo, por ejemplo Sensor norte.</string>
     <string name="sensor_registration_help">Este sensor quedará asociado a %1$s.</string>
     <string name="field_created">Parcela creada</string>
