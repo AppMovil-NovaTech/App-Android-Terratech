@@ -14,6 +14,9 @@ fun InventoryErrorText(error: String?) {
         when (error) {
             "UNAUTHENTICATED" -> R.string.inventory_session_expired
             "OFFLINE" -> R.string.inventory_offline
+            "INVALID_INPUT" -> R.string.inventory_invalid_input
+            "RESOURCE_NOT_FOUND" -> R.string.inventory_resource_not_found
+            "HTTP_ERROR" -> R.string.inventory_save_error
             else -> R.string.inventory_save_error
         }
     Text(stringResource(message), color = Color(0xFFB3261E), style = MaterialTheme.typography.bodyMedium)
