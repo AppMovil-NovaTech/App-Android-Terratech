@@ -17,10 +17,10 @@ import com.novatech.terratech.monitoring.infrastructure.mapper.WebhookRecommenda
 import com.novatech.terratech.monitoring.infrastructure.mapper.domain
 import com.novatech.terratech.monitoring.infrastructure.mapper.row
 import com.novatech.terratech.monitoring.infrastructure.remote.MonitoringApi
+import com.novatech.terratech.monitoring.infrastructure.remote.dto.CreateDeviceDto
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.CreateFieldDto
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.FertilityZoneThresholdsDto
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.FieldVertexDto
-import com.novatech.terratech.monitoring.infrastructure.remote.dto.RegisterSensorDto
 import kotlinx.coroutines.flow.firstOrNull
 import com.novatech.terratech.monitoring.infrastructure.remote.dto.UpdateFertilityZoneThresholdsDto
 import java.time.Instant
@@ -188,13 +188,20 @@ class MonitoringRepositoryImpl(
     override suspend fun registerSensor(
         user: Int,
         field: Int,
-        code: String,
-        name: String
+        macAddress: String,
+        name: String,
+        status: String
     ): Sensor {
         val row =
             apiCall {
-                api.registerSensor(
-                    RegisterSensorDto(code, field, name)
+                api.createDevice(
+                    CreateDeviceDto(
+                        fieldId = field,
+                        macAddress = macAddress,
+                        status = status,
+                        lastSync = Instant.now().toString(),
+                        name = name,
+                    )
                 )
             }.row(user)
 

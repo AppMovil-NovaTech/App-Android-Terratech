@@ -8,7 +8,7 @@ data class MonitoringNavigationActions(
     val selectField: (Int) -> Unit,
     val selectSensor: (Int) -> Unit,
     val createField: (Int, FieldDraft) -> Unit,
-    val registerSensor: (String, String) -> Unit,
+    val registerSensor: (String, String, String) -> Unit,
     val changeDays: (Int) -> Unit,
     val readDetail: (Int) -> Unit,
     val refresh: () -> Unit,
