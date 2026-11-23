@@ -6,8 +6,11 @@ import com.novatech.terratech.iam.infrastructure.implementation.AccountRepositor
 import com.novatech.terratech.iam.infrastructure.local.SessionStore
 import com.novatech.terratech.iam.infrastructure.remote.AccountApi
 import com.novatech.terratech.inventory.domain.repository.InventoryRepository
+import com.novatech.terratech.inventory.domain.repository.ProductReviewRepository
 import com.novatech.terratech.inventory.infrastructure.implementation.InventoryRepositoryImpl
+import com.novatech.terratech.inventory.infrastructure.implementation.ProductReviewRepositoryImpl
 import com.novatech.terratech.inventory.infrastructure.remote.InventoryApi
+import com.novatech.terratech.inventory.infrastructure.remote.ProductReviewApi
 import com.novatech.terratech.monitoring.domain.repository.FieldWeatherRepository
 import com.novatech.terratech.monitoring.domain.repository.MonitoringRepository
 import com.novatech.terratech.monitoring.domain.repository.SatelliteImageRepository
@@ -66,6 +69,11 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun inventory(api: InventoryApi): InventoryRepository = InventoryRepositoryImpl(api)
+
+    @Provides
+    @Singleton
+    fun productReviews(api: ProductReviewApi): ProductReviewRepository =
+        ProductReviewRepositoryImpl(api)
 
     @Provides
     @Singleton
